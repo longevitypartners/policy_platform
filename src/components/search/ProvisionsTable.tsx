@@ -52,7 +52,7 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
           url_minimum_standards,
           url_best_practice
         `)
-        .limit(10);  // Added 10-row limit
+        
       
       if (filters.countries.length > 0) {
         query = query.in('country', filters.countries);
@@ -188,9 +188,7 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
   return (
     <>
       <div>
-        <div className="bg-muted/50 p-4 mb-4 rounded-lg text-sm text-muted-foreground">
-          Showing first 50 results. To access the complete database, please upgrade to our premium plan. Contact our team at team@example.com to learn more.
-        </div>
+        
         <Table>
           <TableHeader className="sticky top-0 bg-white z-10">
             <TableRow>

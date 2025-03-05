@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   Table,
@@ -78,9 +77,6 @@ export const PoliciesTable = ({ policies }: PoliciesTableProps) => {
   if (!policies?.length) {
     return (
       <div className="overflow-x-auto">
-        <div className="bg-muted/50 p-4 mb-4 rounded-lg text-sm text-muted-foreground">
-          Showing first 10 results. To access the complete database, please upgrade to our premium plan. Contact our team at team@example.com to learn more.
-        </div>
         <Table>
           <TableHeader className="sticky top-0 bg-white z-10">
             <TableRow>
@@ -107,9 +103,6 @@ export const PoliciesTable = ({ policies }: PoliciesTableProps) => {
   return (
     <>
       <div className="overflow-x-auto">
-        <div className="bg-muted/50 p-4 mb-4 rounded-lg text-sm text-muted-foreground">
-          Showing first 10 results. To access the complete database, please upgrade to our premium plan. Contact our team at team@example.com to learn more.
-        </div>
         <Table>
           <TableHeader className="sticky top-0 bg-white z-10">
             <TableRow>

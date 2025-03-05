@@ -5,7 +5,14 @@ All notable changes to Project Kish will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.9.0] - 2023-11-15
+## [0.10.0] - 2025-03-05
+
+### Changed
+- Removed limits on the Provisions and Policies tables in the Search page
+- Removed premium plan banner from search results
+- Users can now view all available provisions and policies without restrictions
+
+## [0.9.0] - 2025-02-22
 
 ### Added
 - Initial release of Project Kish
@@ -37,6 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]: https://github.com/yourusername/kish/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/yourusername/kish/releases/tag/v1.0.0 
+[0.10.0]: https://github.com/yourusername/kish/releases/tag/v0.10.0
+[0.9.0]: https://github.com/yourusername/kish/releases/tag/v0.9.0
 
 ## Disclaimer
 

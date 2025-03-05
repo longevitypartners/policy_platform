@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -40,7 +39,6 @@ const Search = () => {
             year_of_enforcement
           )
         `)
-        .limit(10);  // Added 10-row limit
 
       if (policyFilters.countries.length > 0) {
         query = query.in('country', policyFilters.countries);
