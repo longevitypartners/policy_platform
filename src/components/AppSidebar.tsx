@@ -1,14 +1,11 @@
-
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Search,
   LayoutDashboard,
-  Bell,
   Settings,
   LogOut,
-  FileText,
   Menu,
-  X
+  X,
 } from "lucide-react";
 import {
   Sidebar,
@@ -22,23 +19,23 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const mainMenuItems = [
   {
     title: "Dashboard",
     path: "/dashboard",
-    icon: LayoutDashboard
+    icon: LayoutDashboard,
   },
   {
     title: "Search",
     path: "/search",
-    icon: Search
+    icon: Search,
   },
   {
     title: "Settings",
     path: "/settings",
-    icon: Settings
+    icon: Settings,
   },
 ];
 
@@ -46,6 +43,7 @@ const bottomMenuItems = [];
 
 export function AppSidebar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(!isMobile);
@@ -63,16 +61,12 @@ export function AppSidebar() {
     }
   };
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
     <>
       {/* Mobile Menu Toggle Button */}
       {isMobile && (
         <button
-          onClick={toggleSidebar}
+          onClick={() => setIsOpen(!isOpen)}
           className="fixed top-4 left-4 z-50 p-3 rounded-lg bg-white shadow-md hover:bg-gray-50"
         >
           {isOpen ? (
@@ -84,7 +78,7 @@ export function AppSidebar() {
       )}
 
       {/* Sidebar */}
-      <div className={`${!isOpen && isMobile ? 'hidden' : 'block'}`}>
+      <div className={`${!isOpen && isMobile ? "hidden" : "block"}`}>
         <Sidebar className="bg-white border-r border-gray-100 w-[220px] shadow-sm min-h-screen">
           <SidebarContent>
             {/* Logo Section */}
@@ -99,18 +93,30 @@ export function AppSidebar() {
                 <SidebarMenu>
                   {mainMenuItems.map((item) => (
                     <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton 
-                        asChild 
+                      <SidebarMenuButton
+                        asChild
                         onClick={() => {
                           navigate(item.path);
                           if (isMobile) setIsOpen(false);
                         }}
                       >
-                        <div className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-50 transition-colors w-full">
-                          {item.icon && <item.icon className="w-5 h-5 mr-3 text-gray-600" />}
-                          <span className="text-sm text-gray-900">
-                            {item.title}
-                          </span>
+                        <div
+                          className={`flex items-center px-4 py-2 cursor-pointer hover:bg-gray-50 transition-colors w-full ${
+                            location.pathname === item.path
+                              ? "bg-primary text-white hover:bg-primary/90"
+                              : ""
+                          }`}
+                        >
+                          {item.icon && (
+                            <item.icon
+                              className={`w-5 h-5 mr-3 text-gray-600 ${
+                                location.pathname === item.path
+                                  ? "text-primary-foreground"
+                                  : ""
+                              }`}
+                            />
+                          )}
+                          <span className="text-sm">{item.title}</span>
                         </div>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -124,15 +130,17 @@ export function AppSidebar() {
                 <SidebarMenu>
                   {bottomMenuItems.map((item) => (
                     <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton 
-                        asChild 
+                      <SidebarMenuButton
+                        asChild
                         onClick={() => {
                           navigate(item.path);
                           if (isMobile) setIsOpen(false);
                         }}
                       >
                         <div className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-50 transition-colors w-full">
-                          {item.icon && <item.icon className="w-5 h-5 mr-3 text-gray-600" />}
+                          {item.icon && (
+                            <item.icon className="w-5 h-5 mr-3 text-gray-600" />
+                          )}
                           <span className="text-sm text-gray-900">
                             {item.title}
                           </span>
@@ -144,9 +152,7 @@ export function AppSidebar() {
                     <SidebarMenuButton asChild onClick={handleSignOut}>
                       <div className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-50 transition-colors w-full">
                         <LogOut className="w-5 h-5 mr-3 text-gray-600" />
-                        <span className="text-sm text-gray-900">
-                          Sign Out
-                        </span>
+                        <span className="text-sm text-gray-900">Sign Out</span>
                       </div>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
