@@ -89,8 +89,8 @@ export function AppSidebar() {
           <SidebarContent>
             {/* Logo Section */}
             <div className="p-6 mb-4">
-              <div className="flex justify-start px-4">
-                <span className="text-xl font-bold text-black">Project Kish</span>
+              <div className="flex justify-start px-2">
+                <span className="text-xl font-bold text-black">Policy Platform</span>
               </div>
             </div>
 
