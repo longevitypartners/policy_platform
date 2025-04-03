@@ -74,7 +74,7 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
 
         <Separator />
 
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden inset-0 overflow-y-auto py-4 px-6">
           <Tabs defaultValue="overview" className="h-full flex flex-col">
             <TabsList className="grid w-full grid-cols-4 bg-muted p-1">
               <TabsTrigger 
