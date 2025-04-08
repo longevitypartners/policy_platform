@@ -1,43 +1,46 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { FileText } from "lucide-react";
+import LoginSideBar from "./LoginSideBar";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog"; // assuming you placed the dialog code here
 
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+
+  const [signupEmail, setSignupEmail] = useState("");
+  const [organization, setOrganization] = useState("");
+  const [regions, setRegions] = useState<string[]>([]);
+  const [showSignupModal, setShowSignupModal] = useState(false);
+
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleAuth = async (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-        if (error) throw error;
-        toast({
-          title: "Success!",
-          description: "Please check your email to verify your account.",
-        });
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
-        navigate("/");
-      }
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) throw error;
+      navigate("/");
     } catch (error: any) {
       toast({
         title: "Error",
@@ -49,58 +52,241 @@ const Auth = () => {
     }
   };
 
+  const handlePasswordReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email);
+      if (error) throw error;
+      setResetSent(true);
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRegionToggle = (region: string) => {
+    setRegions((prev) =>
+      prev.includes(region)
+        ? prev.filter((r) => r !== region)
+        : [...prev, region]
+    );
+  };
+
+  const availableRegions = [
+    "UK",
+    "France",
+    "Germany",
+    "USA",
+    "Spain",
+    "Italy",
+    "Asia",
+  ];
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white to-gray-50 p-4">
-      <div className="w-full max-w-md">
-        <div className="flex items-center justify-center mb-8">
-          <FileText className="w-8 h-8 mr-2" />
-          <span className="text-2xl font-semibold">PolicyTracker</span>
-        </div>
-
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold mb-6 text-center">
-            {isSignUp ? "Create Account" : "Welcome Back"}
+    <div className="flex flex-row justify-between">
+      <LoginSideBar />
+      <div className="w-full min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white to-gray-50 p-4">
+        <div className="w-1/2 flex flex-col justify-start">
+          <h2 className="text-6xl font-light mb-8">
+            <span className="font-semibold">Policy</span> Tracker
           </h2>
-
-          <form onSubmit={handleAuth} className="space-y-4">
-            <div>
-              <Input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <Input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={loading}
-            >
-              {loading ? "Loading..." : isSignUp ? "Sign Up" : "Sign In"}
-            </Button>
-          </form>
-
-          <div className="mt-4 text-center">
-            <button
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="text-sm text-primary hover:underline"
-            >
-              {isSignUp
-                ? "Already have an account? Sign in"
-                : "Don't have an account? Sign up"}
-            </button>
-          </div>
+          <p className="text-2xl font-semibold">
+            {isForgotPassword ? "Reset Password" : "Log In"}
+          </p>
         </div>
+
+        <div className="w-1/2 bg-[#E9E9E9] px-8 py-2 rounded-b-lg shadow-md border-t-2 border-black ">
+          {resetSent ? (
+            <div className="flex flex-col items-center">
+              <p className="text-green-700 text-center py-6">
+                If your email exists in our system, a reset link has been sent.
+              </p>
+              <Button
+                type="submit"
+                className="w-[148px]"
+                onClick={() => {
+                  setIsForgotPassword(!isForgotPassword);
+                  setResetSent(false);
+                }}
+              >
+                Back to Sign In
+              </Button>
+            </div>
+          ) : (
+            <form
+              onSubmit={isForgotPassword ? handlePasswordReset : handleSignIn}
+              className="space-y-6"
+            >
+              <div>
+                <label htmlFor="email">Email</label>
+                <Input
+                  className="border-2 border-black focus:border-teal-700"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              {!isForgotPassword && (
+                <div>
+                  <label htmlFor="password">Password</label>
+                  <Input
+                    className="border-2 border-black focus:border-teal-700"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+              )}
+
+              <div className="flex justify-between pb-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsForgotPassword(!isForgotPassword);
+                    setResetSent(false);
+                  }}
+                  className="text-sm text-primary hover:underline"
+                >
+                  {isForgotPassword
+                    ? "Back to Sign In"
+                    : "Forgotten your password?"}
+                </button>
+                <Button type="submit" className="w-[148px]" disabled={loading}>
+                  {loading
+                    ? "Loading..."
+                    : isForgotPassword
+                    ? "Reset Password"
+                    : "Sign In"}
+                </Button>
+              </div>
+            </form>
+          )}
+        </div>
+
+        <Dialog open={showSignupModal} onOpenChange={setShowSignupModal}>
+          <DialogTrigger asChild>
+            <button className="flex justify-end w-1/2 font-semibold pr-8 mt-2 text-sm text-primary hover:underline">
+              New to Longevity Partners? Sign up here.
+            </button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader className="flex flex-row justify-between pr-12">
+              <DialogTitle>
+                Request Access to Longevity Partners Policy Tracker
+              </DialogTitle>
+              {/* <Button
+              className="h-6 "
+              variant="outline"
+                type="button"
+                onClick={() => {
+                  console.log({
+                    email: signupEmail,
+                    organization,
+                    regions,
+                  });
+                  setShowSignupModal(false);
+                  toast({
+                    title: "Request Submitted",
+                    description:
+                      "We’ve received your request and will get back to you.",
+                  });
+                }}
+              >
+                Submit
+              </Button> */}
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <label className="block mb-1 font-medium">Email</label>
+                <Input
+                  value={signupEmail}
+                  onChange={(e) => setSignupEmail(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="block mb-1 font-medium">Organization</label>
+                <Input
+                  value={organization}
+                  onChange={(e) => setOrganization(e.target.value)}
+                />
+              </div>
+              {/* <div>
+                <label className="block mb-1 font-medium">
+                  Relevant Countries/Regions
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {availableRegions.map((region) => (
+                    <label key={region} className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={regions.includes(region)}
+                        onChange={() => handleRegionToggle(region)}
+                      />
+                      <span>{region}</span>
+                    </label>
+                  ))}
+                </div>
+              </div> */}
+              <div>
+                <label className="block mb-1 font-medium">
+                  Relevant Countries/Regions
+                </label>
+                <select
+                  multiple
+                  value={regions}
+                  onChange={(e) =>
+                    setRegions(
+                      Array.from(
+                        e.target.selectedOptions,
+                        (option) => option.value
+                      )
+                    )
+                  }
+                  className="w-full border border-black p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-700"
+                >
+                  {availableRegions.map((region) => (
+                    <option key={region} value={region}>
+                      {region}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-sm text-gray-500 mt-1">
+                  Hold Ctrl (Cmd on Mac) to select multiple.
+                </p>
+              </div>
+            </div>
+            <DialogFooter className="pt-4">
+              <Button
+                type="button"
+                onClick={() => {
+                  console.log({
+                    email: signupEmail,
+                    organization,
+                    regions,
+                  });
+                  setShowSignupModal(false);
+                  toast({
+                    title: "Request Submitted",
+                    description:
+                      "We’ve received your request and will get back to you.",
+                  });
+                }}
+              >
+                Submit Request
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
