@@ -1,0 +1,14 @@
+.login-page-sidebar {
+  background-image: url( '../images/login_page_background.svg' );
+  background-color: #000303 !important;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #fff;
+  overflow-y: auto;
+  overflow-x: auto;
+  height: 100vh;
+  padding: .5rem;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+
+}
