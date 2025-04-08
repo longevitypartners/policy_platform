@@ -90,11 +90,11 @@ const Auth = () => {
   ];
 
   return (
-    <div className="flex flex-row justify-between">
+    <div className="flex flex-wrap md:flex-nowrap flex-row justify-between h-full">
       <LoginSideBar />
-      <div className="w-full min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white to-gray-50 p-4">
-        <div className="w-1/2 flex flex-col justify-start">
-          <h2 className="text-6xl font-light mb-8">
+      <div className="w-full flex flex-col items-center justify-center bg-gradient-to-b from-white to-gray-50 p-4">
+        <div className="md:w-1/2 text-center  md:text-start flex flex-col justify-start ">
+          <h2 className="md:text-6xl text-4xl font-light mb-8">
             <span className="font-semibold">Policy</span> Tracker
           </h2>
           <p className="text-2xl font-semibold">
@@ -102,7 +102,7 @@ const Auth = () => {
           </p>
         </div>
 
-        <div className="w-1/2 bg-[#E9E9E9] px-8 py-2 rounded-b-lg shadow-md border-t-2 border-black ">
+        <div className="md:w-1/2 bg-[#E9E9E9] px-8 py-2 rounded-b-lg shadow-md border-t-2 border-black ">
           {resetSent ? (
             <div className="flex flex-col items-center">
               <p className="text-green-700 text-center py-6">
@@ -148,14 +148,14 @@ const Auth = () => {
                 </div>
               )}
 
-              <div className="flex justify-between pb-2">
+              <div className="flex flex-wrap md:justify-between justify-center pb-2">
                 <button
                   type="button"
                   onClick={() => {
                     setIsForgotPassword(!isForgotPassword);
                     setResetSent(false);
                   }}
-                  className="text-sm text-primary hover:underline"
+                  className="text-sm text-primary hover:underline pr-4 pb-4"
                 >
                   {isForgotPassword
                     ? "Back to Sign In"
@@ -173,9 +173,9 @@ const Auth = () => {
           )}
         </div>
 
-        <Dialog open={showSignupModal} onOpenChange={setShowSignupModal}>
+        <Dialog open={showSignupModal} onOpenChange={setShowSignupModal} >
           <DialogTrigger asChild>
-            <button className="flex justify-end w-1/2 font-semibold pr-8 mt-2 text-sm text-primary hover:underline">
+            <button className="flex justify-end md:w-1/2 font-semibold pr-8 mt-2 text-sm text-primary hover:underline">
               New to Longevity Partners? Sign up here.
             </button>
           </DialogTrigger>
