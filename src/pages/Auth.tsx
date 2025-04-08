@@ -5,6 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import LoginSideBar from "./LoginSideBar";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog"; // assuming you placed the dialog code here
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -12,6 +21,11 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [resetSent, setResetSent] = useState(false);
+
+  const [signupEmail, setSignupEmail] = useState("");
+  const [organization, setOrganization] = useState("");
+  const [regions, setRegions] = useState<string[]>([]);
+  const [showSignupModal, setShowSignupModal] = useState(false);
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -57,6 +71,24 @@ const Auth = () => {
     }
   };
 
+  const handleRegionToggle = (region: string) => {
+    setRegions((prev) =>
+      prev.includes(region)
+        ? prev.filter((r) => r !== region)
+        : [...prev, region]
+    );
+  };
+
+  const availableRegions = [
+    "UK",
+    "France",
+    "Germany",
+    "USA",
+    "Spain",
+    "Italy",
+    "Asia",
+  ];
+
   return (
     <div className="flex flex-row justify-between">
       <LoginSideBar />
@@ -97,7 +129,6 @@ const Auth = () => {
                 <Input
                   className="border-2 border-black focus:border-teal-700"
                   type="email"
-                  placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -110,7 +141,6 @@ const Auth = () => {
                   <Input
                     className="border-2 border-black focus:border-teal-700"
                     type="password"
-                    placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -142,12 +172,121 @@ const Auth = () => {
             </form>
           )}
         </div>
-        <button
-          onClick={() => {}}
-          className="flex justify-end w-1/2 font-semibold pr-8 mt-2 text-sm text-primary hover:underline"
-        >
-          New to Longevity Partners? Sign up here.
-        </button>
+
+        <Dialog open={showSignupModal} onOpenChange={setShowSignupModal}>
+          <DialogTrigger asChild>
+            <button className="flex justify-end w-1/2 font-semibold pr-8 mt-2 text-sm text-primary hover:underline">
+              New to Longevity Partners? Sign up here.
+            </button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader className="flex flex-row justify-between pr-12">
+              <DialogTitle>
+                Request Access to Longevity Partners Policy Tracker
+              </DialogTitle>
+              {/* <Button
+              className="h-6 "
+              variant="outline"
+                type="button"
+                onClick={() => {
+                  console.log({
+                    email: signupEmail,
+                    organization,
+                    regions,
+                  });
+                  setShowSignupModal(false);
+                  toast({
+                    title: "Request Submitted",
+                    description:
+                      "We’ve received your request and will get back to you.",
+                  });
+                }}
+              >
+                Submit
+              </Button> */}
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <label className="block mb-1 font-medium">Email</label>
+                <Input
+                  value={signupEmail}
+                  onChange={(e) => setSignupEmail(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="block mb-1 font-medium">Organization</label>
+                <Input
+                  value={organization}
+                  onChange={(e) => setOrganization(e.target.value)}
+                />
+              </div>
+              {/* <div>
+                <label className="block mb-1 font-medium">
+                  Relevant Countries/Regions
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {availableRegions.map((region) => (
+                    <label key={region} className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        checked={regions.includes(region)}
+                        onChange={() => handleRegionToggle(region)}
+                      />
+                      <span>{region}</span>
+                    </label>
+                  ))}
+                </div>
+              </div> */}
+              <div>
+                <label className="block mb-1 font-medium">
+                  Relevant Countries/Regions
+                </label>
+                <select
+                  multiple
+                  value={regions}
+                  onChange={(e) =>
+                    setRegions(
+                      Array.from(
+                        e.target.selectedOptions,
+                        (option) => option.value
+                      )
+                    )
+                  }
+                  className="w-full border border-black p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-700"
+                >
+                  {availableRegions.map((region) => (
+                    <option key={region} value={region}>
+                      {region}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-sm text-gray-500 mt-1">
+                  Hold Ctrl (Cmd on Mac) to select multiple.
+                </p>
+              </div>
+            </div>
+            <DialogFooter className="pt-4">
+              <Button
+                type="button"
+                onClick={() => {
+                  console.log({
+                    email: signupEmail,
+                    organization,
+                    regions,
+                  });
+                  setShowSignupModal(false);
+                  toast({
+                    title: "Request Submitted",
+                    description:
+                      "We’ve received your request and will get back to you.",
+                  });
+                }}
+              >
+                Submit Request
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
