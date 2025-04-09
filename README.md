@@ -1,4 +1,4 @@
-# Policy Platform
+# Policy Tracker
 
 ## Project info
 
@@ -436,7 +436,7 @@ CREATE TABLE user_notification_settings (
 
 ## Disclaimer
 
-This software is provided "as is" without warranty of any kind, either express or implied. The maintainers of Policy Platform are under no obligation to provide support, updates, or fixes for this codebase.
+This software is provided "as is" without warranty of any kind, either express or implied. The maintainers of Policy Tracker are under no obligation to provide support, updates, or fixes for this codebase.
 
 ### No Support Obligation
 The maintainers and contributors to this project are not obligated to provide technical support, maintenance, updates, or enhancements. Any support provided is voluntary and can be discontinued at any time without notice.
@@ -449,7 +449,7 @@ Users implement and deploy this software at their own risk. It is the responsibi
 
 ## License
 
-Policy Platform is licensed under the [Apache License 2.0](LICENSE). See the [LICENSE](LICENSE) file for the full license text.
+Policy Tracker is licensed under the [Apache License 2.0](LICENSE). See the [LICENSE](LICENSE) file for the full license text.
 
 The Apache License 2.0 is a permissive open source license that allows you to:
 

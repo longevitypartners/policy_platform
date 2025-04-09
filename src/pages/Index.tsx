@@ -10,7 +10,7 @@ const Index = () => {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 glass">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <span className="text-xl font-semibold">Policy Platform</span>
+          <span className="text-xl font-semibold">Policy Tracker</span>
           <Button variant="outline" className="hover-scale" onClick={() => navigate("/auth")}>
             Sign In
           </Button>
