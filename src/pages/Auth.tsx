@@ -220,7 +220,7 @@ const Auth = () => {
                   onChange={(e) => setOrganization(e.target.value)}
                 />
               </div>
-              {/* <div>
+              <div>
                 <label className="block mb-1 font-medium">
                   Relevant Countries/Regions
                 </label>
@@ -236,33 +236,6 @@ const Auth = () => {
                     </label>
                   ))}
                 </div>
-              </div> */}
-              <div>
-                <label className="block mb-1 font-medium">
-                  Relevant Countries/Regions
-                </label>
-                <select
-                  multiple
-                  value={regions}
-                  onChange={(e) =>
-                    setRegions(
-                      Array.from(
-                        e.target.selectedOptions,
-                        (option) => option.value
-                      )
-                    )
-                  }
-                  className="w-full border border-black p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-700"
-                >
-                  {availableRegions.map((region) => (
-                    <option key={region} value={region}>
-                      {region}
-                    </option>
-                  ))}
-                </select>
-                <p className="text-sm text-gray-500 mt-1">
-                  Hold Ctrl (Cmd on Mac) to select multiple.
-                </p>
               </div>
             </div>
             <DialogFooter className="pt-4">
