@@ -12,15 +12,15 @@ export const RecommendationsTab = ({ provision }: RecommendationsTabProps) => (
       <h4 className="font-medium">
         Minimum Requirements
       </h4>
-      <p className="text-sm text-muted-foreground mt-2">
+      <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">
         {provision.minimum_requirement || "No minimum requirements specified"}
       </p>
     </div>
-    <div>
+    <div className="my-6">
       <h4 className="font-medium">
         Best Practices
       </h4>
-      <p className="text-sm text-muted-foreground mt-2">
+      <p className="text-sm text-muted-foreground mt-2 whitespace-pre-wrap">
         {provision.best_practice || "No best practices available"}
       </p>
     </div>
