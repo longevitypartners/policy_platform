@@ -8,7 +8,7 @@ interface DescriptionTabProps {
 export const DescriptionTab = ({ provision }: DescriptionTabProps) => (
   <>
     <h2 className="text-xl font-semibold mb-6">Description</h2>
-    <p className="text-sm text-muted-foreground">
+    <p className="text-sm text-muted-foreground whitespace-pre-wrap">
       {provision.description || "No description available"}
     </p>
   </>

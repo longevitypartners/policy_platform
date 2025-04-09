@@ -28,7 +28,7 @@ const mainMenuItems = [
     icon: LayoutDashboard,
   },
   {
-    title: "Search",
+    title: "Policy Library",
     path: "/search",
     icon: Search,
   },
@@ -84,7 +84,7 @@ export function AppSidebar() {
             {/* Logo Section */}
             <div className="p-6 mb-4">
               <div className="flex justify-start px-2">
-                <span className="text-xl font-bold text-black">Policy Platform</span>
+                <span className="text-xl font-bold text-black">Policy Tracker</span>
               </div>
             </div>
 

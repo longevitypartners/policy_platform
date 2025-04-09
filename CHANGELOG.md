@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Policy Platform will be documented in this file.
+All notable changes to Policy Tracker will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.9.0] - 2025-02-22
 
 ### Added
-- Initial release of Policy Platform
+- Initial release of Policy Tracker
 - Policy browsing and filtering functionality
 - Provision details and search capabilities
 - User authentication via Supabase
@@ -49,7 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Disclaimer
 
-This software is provided "as is" without warranty of any kind, either express or implied. The maintainers of Policy Platform are under no obligation to provide support, updates, or fixes for this codebase.
+This software is provided "as is" without warranty of any kind, either express or implied. The maintainers of Policy Tracker are under no obligation to provide support, updates, or fixes for this codebase.
 
 ### No Support Obligation
 The maintainers and contributors to this project are not obligated to provide technical support, maintenance, updates, or enhancements. Any support provided is voluntary and can be discontinued at any time without notice.
