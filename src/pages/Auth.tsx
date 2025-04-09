@@ -87,22 +87,23 @@ const Auth = () => {
     "Spain",
     "Italy",
     "Asia",
+    
   ];
 
   return (
     <div className="flex flex-wrap md:flex-nowrap flex-row justify-between h-full">
       <LoginSideBar />
-      <div className="w-full flex flex-col items-center justify-center bg-gradient-to-b from-white to-gray-50 p-4">
+      <div className="w-full flex flex-col items-center md:justify-center bg-gradient-to-b from-white to-gray-50 p-4">
         <div className="md:w-1/2 text-center  md:text-start flex flex-col justify-start ">
           <h2 className="md:text-6xl text-4xl font-light mb-8">
             <span className="font-semibold">Policy</span> Tracker
           </h2>
-          <p className="text-2xl font-semibold">
+          <p className="text-4xl font-semibold pb-2">
             {isForgotPassword ? "Reset Password" : "Log In"}
           </p>
         </div>
 
-        <div className="md:w-1/2 bg-[#E9E9E9] px-8 py-2 rounded-b-lg shadow-md border-t-2 border-black ">
+        <div className="md:w-1/2 bg-[#E9E9E9] px-8 py-6 rounded-b-lg shadow-md border-t-2 border-black ">
           {resetSent ? (
             <div className="flex flex-col items-center">
               <p className="text-green-700 text-center py-6">
@@ -125,9 +126,9 @@ const Auth = () => {
               className="space-y-6"
             >
               <div>
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email" className="font-light">Email</label>
                 <Input
-                  className="border-2 border-black focus:border-teal-700"
+                  className=" border-black focus:border-teal-700 mt-2 shadow-inner shadow-gray-400"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -137,9 +138,9 @@ const Auth = () => {
 
               {!isForgotPassword && (
                 <div>
-                  <label htmlFor="password">Password</label>
+                  <label htmlFor="password" className="font-light">Password</label>
                   <Input
-                    className="border-2 border-black focus:border-teal-700"
+                    className="border-black focus:border-teal-700 mt-2 shadow-inner shadow-gray-400"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -155,7 +156,7 @@ const Auth = () => {
                     setIsForgotPassword(!isForgotPassword);
                     setResetSent(false);
                   }}
-                  className="text-sm text-primary hover:underline pr-4 pb-4"
+                  className="text-sm text-primary hover:underline pr-4 md:pb-0 pb-4 "
                 >
                   {isForgotPassword
                     ? "Back to Sign In"
@@ -166,7 +167,7 @@ const Auth = () => {
                     ? "Loading..."
                     : isForgotPassword
                     ? "Reset Password"
-                    : "Sign In"}
+                    : "Log In"}
                 </Button>
               </div>
             </form>
