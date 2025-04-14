@@ -20,6 +20,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useEffect, useState } from "react";
+import Logo from "../images/LP_logo_black.svg"
 
 const mainMenuItems = [
   {
@@ -83,6 +84,7 @@ export function AppSidebar() {
           <SidebarContent>
             {/* Logo Section */}
             <div className="p-6 mb-4">
+            <img src={Logo} alt="Policy Tracker Logo" className="" />
               <div className="flex justify-start px-2">
                 <span className="text-xl font-bold text-black">Policy Tracker</span>
               </div>
