@@ -105,26 +105,26 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
 
             <div className="flex-1 overflow-hidden">
               <TabsContent value="overview" className="mt-6 mx-6 h-full">
-                <div className="h-full overflow-y-auto">
+                <div className="h-full hover-scroll">
                   <h2 className="text-xl font-semibold mb-6">Overview</h2>
                   <OverviewTab provision={provision} />
                 </div>
               </TabsContent>
 
               <TabsContent value="description" className="mt-6 mx-6 h-full">
-                <div className="h-full overflow-y-auto">
+                <div className="h-full hover-scroll">
                   <DescriptionTab provision={provision} />
                 </div>
               </TabsContent>
 
               <TabsContent value="recommendations" className="mt-6 mx-6 h-full">
-                <div className="h-full overflow-y-auto">
+                <div className="h-full hover-scroll">
                   <RecommendationsTab provision={provision} />
                 </div>
               </TabsContent>
 
               <TabsContent value="resources" className="mt-6 mx-6 h-full">
-                <div className="h-full overflow-y-auto">
+              <div className="h-full hover-scroll">
                   <ResourcesTab provision={provision} />
                 </div>
               </TabsContent>

@@ -8,7 +8,7 @@ interface ResourcesTabProps {
 export const ResourcesTab = ({ provision }: ResourcesTabProps) => (
   <>
     <h2 className="text-xl font-semibold mb-6">Resources</h2>
-    <div className="space-y-4">
+    <div className="h-full">
       {provision.url_minimum_standards && (
         <a
           href={provision.url_minimum_standards}

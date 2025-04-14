@@ -1,5 +1,4 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -35,7 +34,7 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
   }
 
   .glass {
@@ -74,4 +73,22 @@
 /* Style select dropdown options */
 [role="option"] {
   @apply bg-white hover:bg-gray-50;
+}
+
+.hover-scroll {
+  overflow-y: hidden;
+  transition: all 0.2s ease;
+}
+
+.hover-scroll:hover {
+  overflow-y: auto;
+}
+
+.hover-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.hover-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
 }
