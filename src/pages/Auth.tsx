@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "@/components/ui/dialog"; // assuming you placed the dialog code here
+} from "@/components/ui/dialog";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -26,6 +26,8 @@ const Auth = () => {
   const [organization, setOrganization] = useState("");
   const [regions, setRegions] = useState<string[]>([]);
   const [showSignupModal, setShowSignupModal] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [showTCModal, setShowTCModal] = useState(false);
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -87,14 +89,13 @@ const Auth = () => {
     "Spain",
     "Italy",
     "Asia",
-    
   ];
 
   return (
     <div className="flex flex-wrap md:flex-nowrap flex-row justify-between h-full">
       <LoginSideBar />
       <div className="w-full flex flex-col items-center md:justify-center bg-gradient-to-b from-white to-gray-50 p-4">
-        <div className="md:w-1/2 text-center  md:text-start flex flex-col justify-start ">
+        <div className="md:w-1/2 text-center md:text-start flex flex-col justify-start">
           <h2 className="md:text-6xl text-4xl font-light mb-8">
             <span className="font-semibold">Policy</span> Tracker
           </h2>
@@ -113,7 +114,7 @@ const Auth = () => {
                 type="submit"
                 className="w-[148px]"
                 onClick={() => {
-                  setIsForgotPassword(!isForgotPassword);
+                  setIsForgotPassword(false);
                   setResetSent(false);
                 }}
               >
@@ -128,7 +129,7 @@ const Auth = () => {
               <div>
                 <label htmlFor="email" className="font-light">Email</label>
                 <Input
-                  className=" border-black focus:border-teal-700 mt-2 shadow-inner shadow-gray-400"
+                  className="border-black focus:border-teal-700 mt-2 shadow-inner shadow-gray-400"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -156,7 +157,7 @@ const Auth = () => {
                     setIsForgotPassword(!isForgotPassword);
                     setResetSent(false);
                   }}
-                  className="text-sm text-primary hover:underline pr-4 md:pb-0 pb-4 "
+                  className="text-sm text-primary hover:underline pr-4 md:pb-0 pb-4"
                 >
                   {isForgotPassword
                     ? "Back to Sign In"
@@ -174,7 +175,8 @@ const Auth = () => {
           )}
         </div>
 
-        <Dialog open={showSignupModal} onOpenChange={setShowSignupModal} >
+        {/* SIGNUP MODAL */}
+        <Dialog open={showSignupModal} onOpenChange={setShowSignupModal}>
           <DialogTrigger asChild>
             <button className="flex justify-end md:w-1/2 font-semibold pr-8 mt-2 text-sm text-primary hover:underline">
               New to Longevity Partners? Sign up here.
@@ -185,26 +187,6 @@ const Auth = () => {
               <DialogTitle>
                 Request Access to Longevity Partners Policy Tracker
               </DialogTitle>
-              {/* <Button
-              className="h-6 "
-              variant="outline"
-                type="button"
-                onClick={() => {
-                  console.log({
-                    email: signupEmail,
-                    organization,
-                    regions,
-                  });
-                  setShowSignupModal(false);
-                  toast({
-                    title: "Request Submitted",
-                    description:
-                      "We’ve received your request and will get back to you.",
-                  });
-                }}
-              >
-                Submit
-              </Button> */}
             </DialogHeader>
             <div className="space-y-4">
               <div>
@@ -238,7 +220,27 @@ const Auth = () => {
                   ))}
                 </div>
               </div>
+
+              {/* T&C Checkbox */}
+              <div className="flex items-center space-x-2 pt-2">
+                <input
+                  type="checkbox"
+                  checked={acceptedTerms}
+                  onChange={() => setAcceptedTerms(!acceptedTerms)}
+                />
+                <p className="text-sm">
+                  I agree to the{" "}
+                  <button
+                    type="button"
+                    className="text-primary underline"
+                    onClick={() => setShowTCModal(true)}
+                  >
+                    Terms and Conditions
+                  </button>
+                </p>
+              </div>
             </div>
+
             <DialogFooter className="pt-4">
               <Button
                 type="button"
@@ -249,16 +251,55 @@ const Auth = () => {
                     regions,
                   });
                   setShowSignupModal(false);
+                  setAcceptedTerms(false);
                   toast({
                     title: "Request Submitted",
                     description:
                       "We’ve received your request and will get back to you.",
                   });
                 }}
+                disabled={!acceptedTerms}
               >
                 Submit Request
               </Button>
             </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* T&C Pop-up */}
+        <Dialog open={showTCModal} onOpenChange={setShowTCModal}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Terms and Conditions</DialogTitle>
+              <DialogDescription>
+                <div className="mt-4 max-h-[300px] overflow-y-auto text-sm">
+                  <p>
+                    By using this platform, you agree to adhere to our data
+                    usage policies, confidentiality agreements, and any
+                    applicable local laws regarding digital security and
+                    communications. Unauthorized access or usage of user data
+                    may result in legal actions. This service is offered "as is"
+                    with no guarantees regarding uptime, reliability, or
+                    feature stability.
+                  </p>
+                  <p className="mt-4">
+                    You are solely responsible for the content you upload,
+                    including but not limited to documents, text, and
+                    organization-related materials. We reserve the right to
+                    suspend or remove access if terms are violated.
+                  </p>
+                  <p className="mt-4">
+                    For full details or legal inquiries, please contact our
+                    compliance team.
+                  </p>
+                </div>
+              </DialogDescription>
+              <DialogFooter>
+                <Button type="button" onClick={() => setShowTCModal(false)}>
+                  Close
+                </Button>
+              </DialogFooter>
+            </DialogHeader>
           </DialogContent>
         </Dialog>
       </div>
