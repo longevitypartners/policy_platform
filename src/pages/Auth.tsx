@@ -106,9 +106,8 @@ const Auth = () => {
     }
 
     try {
-      // Insert the data into the sign-up table (or equivalent database table)
       const { data, error } = await supabase
-        .from('signup_requests') // Adjust to your actual table name
+        .from('signup_requests') 
         .insert([
           {
             email: signupEmail,
