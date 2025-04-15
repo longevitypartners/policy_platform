@@ -1,3 +1,4 @@
+// TODO: component needs to be refactored
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -82,14 +83,30 @@ const Auth = () => {
   };
 
   const availableRegions = [
-    "UK",
+    "Portugal",
+    "Austria",
+    "Sweden",
+    "Luxembourg",
+    "Belgium (Flanders)",
+    "Belgium (Brussels)",
+    "Finland",
+    "Netherlands",
     "France",
-    "Germany",
-    "USA",
-    "Spain",
     "Italy",
-    "Asia",
+    "United Kingdom",
+    "Denmark",
+    "Romania",
+    "Hungary",
+    "Slovakia",
+    "Spain",
+    "Ireland",
+    "Belgium (Wallonia)",
+    "Germany",
+    "Poland",
+    "Czech Republic",
+    "Norway",
   ];
+  
   const validateEmail = (email: string) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
