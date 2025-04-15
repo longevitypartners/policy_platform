@@ -90,6 +90,52 @@ const Auth = () => {
     "Italy",
     "Asia",
   ];
+  const validateEmail = (email: string) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const handleSignUpSubmit = async () => {
+    if (!signupEmail || !validateEmail(signupEmail) || !organization || regions.length === 0 || !acceptedTerms) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields and accept the terms.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('signup_requests') 
+        .insert([
+          {
+            email: signupEmail,
+            organization,
+            regions,
+            accepted_terms:acceptedTerms,
+          },
+        ]);
+
+      if (error) {
+        throw error;
+      }
+
+      console.log(data);
+      setShowSignupModal(false);
+      setAcceptedTerms(false);
+      toast({
+        title: "Request Submitted",
+        description: "We’ve received your request and will get back to you.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <div className="flex flex-wrap md:flex-nowrap flex-row justify-between h-full">
@@ -192,8 +238,10 @@ const Auth = () => {
               <div>
                 <label className="block mb-1 font-medium">Email</label>
                 <Input
+                type="email"
                   value={signupEmail}
                   onChange={(e) => setSignupEmail(e.target.value)}
+                  required
                 />
               </div>
               <div>
@@ -201,6 +249,7 @@ const Auth = () => {
                 <Input
                   value={organization}
                   onChange={(e) => setOrganization(e.target.value)}
+                  required
                 />
               </div>
               <div>
@@ -244,21 +293,8 @@ const Auth = () => {
             <DialogFooter className="pt-4">
               <Button
                 type="button"
-                onClick={() => {
-                  console.log({
-                    email: signupEmail,
-                    organization,
-                    regions,
-                  });
-                  setShowSignupModal(false);
-                  setAcceptedTerms(false);
-                  toast({
-                    title: "Request Submitted",
-                    description:
-                      "We’ve received your request and will get back to you.",
-                  });
-                }}
-                disabled={!acceptedTerms}
+                onClick={handleSignUpSubmit}
+                disabled={!acceptedTerms || !signupEmail|| !validateEmail(signupEmail) || !organization || regions.length === 0}
               >
                 Submit Request
               </Button>
