@@ -84,7 +84,7 @@ export function AppSidebar() {
           <SidebarContent>
             {/* Logo Section */}
             <div className="p-6 mb-4">
-            <img src={Logo} alt="Policy Tracker Logo" className="" />
+            <img src={Logo} alt="Policy Tracker Logo" className="px-4 mx-auto" />
               <div className="flex justify-start px-2">
                 <span className="text-xl font-bold text-black">Policy Tracker</span>
               </div>
