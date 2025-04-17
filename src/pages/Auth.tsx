@@ -119,13 +119,14 @@ const Auth = () => {
   };
 
   const handleSignUpSubmit = async () => {
+    const isLocalhost = window.location.hostname === "localhost";
     if (
       !signupEmail ||
       !validateEmail(signupEmail) ||
       !organization ||
       regions.length === 0 ||
       !acceptedTerms ||
-      !(window.location.href === "localhost") && !captchaToken
+      (!isLocalhost && !captchaToken)
     ) {
       toast({
         title: "Error",
@@ -142,6 +143,7 @@ const Auth = () => {
           organization,
           regions,
           accepted_terms: acceptedTerms,
+          captcha_token: captchaToken,
         },
       ]);
 
@@ -318,13 +320,13 @@ const Auth = () => {
                   </button>
                 </p>
               </div>
-              <div className="captcha">
+                <div className="captcha">
                 <ReCAPTCHA
                   sitekey={SITE_KEY}
-                  onChange={(token) => setCaptchaToken(token)}
+                  onChange={(token: string | null) => setCaptchaToken(token)}
                   className="pt-4"
                 />
-              </div>
+                </div>
             </div>
 
             <DialogFooter className="pt-4">
