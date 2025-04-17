@@ -33,8 +33,7 @@ const Auth = () => {
   const [showTCModal, setShowTCModal] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
-  // to be sorted alongside other env's || const SITE_KEY =  process.env.VITE_CAPTCHA_KEY || "6Ld8exorAAAAABGnn_s-W1zB9sdeV4gs1uOYAGk9";
-  const SITE_KEY = "6Ld8exorAAAAABGnn_s-W1zB9sdeV4gs1uOYAGk9";
+  const SITE_KEY = import.meta.env.VITE_GOOGLE_CAPTCHA_SITE_KEY;
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -321,13 +320,13 @@ const Auth = () => {
                   </button>
                 </p>
               </div>
-                <div className="captcha">
+              <div className="captcha">
                 <ReCAPTCHA
                   sitekey={SITE_KEY}
                   onChange={(token: string | null) => setCaptchaToken(token)}
                   className="pt-4"
                 />
-                </div>
+              </div>
             </div>
 
             <DialogFooter className="pt-4">
