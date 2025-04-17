@@ -1,7 +1,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PolicyDetailsDialog } from "@/components/search/PolicyDetailsDialog";
 import { ProvisionDetailsDialog } from "@/components/search/ProvisionDetailsDialog";
 import { UpdatesList } from "@/components/dashboard/UpdatesList";
