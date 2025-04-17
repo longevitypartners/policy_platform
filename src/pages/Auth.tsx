@@ -16,6 +16,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import SubscriptionAgreement from "./SubscriptionAgreement";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -30,6 +31,10 @@ const Auth = () => {
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [showTCModal, setShowTCModal] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+
+  // to be sorted alongside other env's || const SITE_KEY =  process.env.VITE_CAPTCHA_KEY || "6Ld8exorAAAAABGnn_s-W1zB9sdeV4gs1uOYAGk9";
+  const SITE_KEY = "6Ld8exorAAAAABGnn_s-W1zB9sdeV4gs1uOYAGk9";
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -119,7 +124,8 @@ const Auth = () => {
       !validateEmail(signupEmail) ||
       !organization ||
       regions.length === 0 ||
-      !acceptedTerms
+      !acceptedTerms ||
+      !(window.location.href === "localhost") && !captchaToken
     ) {
       toast({
         title: "Error",
@@ -280,7 +286,7 @@ const Auth = () => {
                 <label className="block mb-1 font-medium">
                   Relevant Countries/Regions
                 </label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-3 gap-2">
                   {availableRegions.map((region) => (
                     <label key={region} className="flex items-center space-x-2">
                       <input
@@ -311,6 +317,13 @@ const Auth = () => {
                     Terms and Conditions
                   </button>
                 </p>
+              </div>
+              <div className="captcha">
+                <ReCAPTCHA
+                  sitekey={SITE_KEY}
+                  onChange={(token) => setCaptchaToken(token)}
+                  className="pt-4"
+                />
               </div>
             </div>
 
