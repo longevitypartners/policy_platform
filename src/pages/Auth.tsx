@@ -118,8 +118,9 @@ const Auth = () => {
     return regex.test(email);
   };
 
+  const isLocalhost = window.location.hostname === "localhost";
+
   const handleSignUpSubmit = async () => {
-    const isLocalhost = window.location.hostname === "localhost";
     if (
       !signupEmail ||
       !validateEmail(signupEmail) ||
@@ -338,7 +339,8 @@ const Auth = () => {
                   !signupEmail ||
                   !validateEmail(signupEmail) ||
                   !organization ||
-                  regions.length === 0
+                  regions.length === 0 ||
+                  (!isLocalhost && !captchaToken)
                 }
               >
                 Submit Request
