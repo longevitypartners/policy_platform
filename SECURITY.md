@@ -2,7 +2,7 @@
 
 ## Reporting a Vulnerability
 
-We take the security of Kish seriously. If you believe you have found a security vulnerability, please report it to us through GitHub's private vulnerability reporting feature:
+We take the security of Policy Platform seriously. If you believe you have found a security vulnerability, please report it to us through GitHub's private vulnerability reporting feature:
 
 1. Go to the repository's "Security" tab
 2. Click on "Report a vulnerability"

@@ -15,6 +15,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+import SubscriptionAgreement from "./SubscriptionAgreement";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -106,14 +107,20 @@ const Auth = () => {
     "Czech Republic",
     "Norway",
   ];
-  
+
   const validateEmail = (email: string) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
 
   const handleSignUpSubmit = async () => {
-    if (!signupEmail || !validateEmail(signupEmail) || !organization || regions.length === 0 || !acceptedTerms) {
+    if (
+      !signupEmail ||
+      !validateEmail(signupEmail) ||
+      !organization ||
+      regions.length === 0 ||
+      !acceptedTerms
+    ) {
       toast({
         title: "Error",
         description: "Please fill in all fields and accept the terms.",
@@ -123,22 +130,18 @@ const Auth = () => {
     }
 
     try {
-      const { data, error } = await supabase
-        .from('signup_requests') 
-        .insert([
-          {
-            email: signupEmail,
-            organization,
-            regions,
-            accepted_terms:acceptedTerms,
-          },
-        ]);
+      const { data, error } = await supabase.from("signup_requests").insert([
+        {
+          email: signupEmail,
+          organization,
+          regions,
+          accepted_terms: acceptedTerms,
+        },
+      ]);
 
       if (error) {
         throw error;
       }
-
-      console.log(data);
       setShowSignupModal(false);
       setAcceptedTerms(false);
       toast({
@@ -190,7 +193,9 @@ const Auth = () => {
               className="space-y-6"
             >
               <div>
-                <label htmlFor="email" className="font-light">Email</label>
+                <label htmlFor="email" className="font-light">
+                  Email
+                </label>
                 <Input
                   className="border-black focus:border-teal-700 mt-2 shadow-inner shadow-gray-400"
                   type="email"
@@ -202,7 +207,9 @@ const Auth = () => {
 
               {!isForgotPassword && (
                 <div>
-                  <label htmlFor="password" className="font-light">Password</label>
+                  <label htmlFor="password" className="font-light">
+                    Password
+                  </label>
                   <Input
                     className="border-black focus:border-teal-700 mt-2 shadow-inner shadow-gray-400"
                     type="password"
@@ -255,7 +262,7 @@ const Auth = () => {
               <div>
                 <label className="block mb-1 font-medium">Email</label>
                 <Input
-                type="email"
+                  type="email"
                   value={signupEmail}
                   onChange={(e) => setSignupEmail(e.target.value)}
                   required
@@ -311,7 +318,13 @@ const Auth = () => {
               <Button
                 type="button"
                 onClick={handleSignUpSubmit}
-                disabled={!acceptedTerms || !signupEmail|| !validateEmail(signupEmail) || !organization || regions.length === 0}
+                disabled={
+                  !acceptedTerms ||
+                  !signupEmail ||
+                  !validateEmail(signupEmail) ||
+                  !organization ||
+                  regions.length === 0
+                }
               >
                 Submit Request
               </Button>
@@ -324,29 +337,7 @@ const Auth = () => {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Terms and Conditions</DialogTitle>
-              <DialogDescription>
-                <div className="mt-4 max-h-[300px] overflow-y-auto text-sm">
-                  <p>
-                    By using this platform, you agree to adhere to our data
-                    usage policies, confidentiality agreements, and any
-                    applicable local laws regarding digital security and
-                    communications. Unauthorized access or usage of user data
-                    may result in legal actions. This service is offered "as is"
-                    with no guarantees regarding uptime, reliability, or
-                    feature stability.
-                  </p>
-                  <p className="mt-4">
-                    You are solely responsible for the content you upload,
-                    including but not limited to documents, text, and
-                    organization-related materials. We reserve the right to
-                    suspend or remove access if terms are violated.
-                  </p>
-                  <p className="mt-4">
-                    For full details or legal inquiries, please contact our
-                    compliance team.
-                  </p>
-                </div>
-              </DialogDescription>
+              <SubscriptionAgreement />
               <DialogFooter>
                 <Button type="button" onClick={() => setShowTCModal(false)}>
                   Close
