@@ -797,9 +797,6 @@ function SubscriptionAgreement() {
     <p style="margin-top:0pt; margin-bottom:6pt; text-align:justify; line-height:15pt;"><span style="font-family:Arial;">This has been entered into on the date stated at the beginning of it.</span></p>
 
     <p style="margin-top:14pt; margin-bottom:14pt; line-height:normal;"><span style="font-family:Arial;">By clicking the &quot;I Agree&quot; button below, you confirm that you have read, understood, and accept the terms and conditions of this Agreement.</span></p>
-    <div style="clear:both;">
-        <p style="margin-top:0pt; margin-bottom:8pt; text-align:center;">1</p>
-    </div>
 </div>
         `,
       }}
