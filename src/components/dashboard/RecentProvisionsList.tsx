@@ -1,4 +1,3 @@
-
 import { Activity } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -31,7 +30,7 @@ export const RecentProvisionsList = ({
     <Card className="col-span-1 flex flex-col h-full">
       <CardHeader>
         <div className="flex justify-between items-center">
-          <CardTitle>New Provisions</CardTitle>
+          <CardTitle>New Requirements</CardTitle>
           <Select value={timeFilter} onValueChange={onTimeFilterChange}>
             <SelectTrigger className="w-[140px]">
               <SelectValue placeholder="Select time range" />
@@ -50,7 +49,7 @@ export const RecentProvisionsList = ({
           ) : !provisions?.length ? (
             <Alert>
               <AlertDescription>
-                There are no new provisions.
+                There are no new requirements.
               </AlertDescription>
             </Alert>
           ) : (

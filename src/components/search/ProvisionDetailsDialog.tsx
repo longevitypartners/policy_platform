@@ -43,7 +43,7 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
                 </div>
               )}
               <DialogTitle className="text-xl font-semibold">
-                {provision.requirement || "Untitled Provision"}
+                {provision.requirement || "Untitled Requirement"}
               </DialogTitle>
             </div>
             
