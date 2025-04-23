@@ -10,10 +10,10 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
+  state: State = {
+    hasError: false,
+    error: null,
+  };
 
   static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
@@ -24,11 +24,19 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   render() {
-    if (this.state.hasError && this.state.error) {
+    const { hasError, error } = this.state;
+
+    if (hasError && error) {
       return (
-        <div className="p-4">
-          <h1 className="text-xl font-bold">Something went wrong!</h1>
-          <p className="text-red-500">{this.state.error.message}</p>
+        <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-100">
+          <h1 className="text-2xl font-semibold text-red-600">Something went wrong</h1>
+          <p className="mt-2 text-sm text-gray-700">{error.message}</p>
+          <button
+            onClick={() => (window.location.href = "/")}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Return to Home
+          </button>
         </div>
       );
     }
