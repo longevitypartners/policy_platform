@@ -1,4 +1,3 @@
-
 import { Search as SearchIcon, FileText, ScrollText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,7 +34,7 @@ export const SearchHeader = ({
             className="gap-2"
           >
             <ScrollText className="h-4 w-4" />
-            Provisions
+            Requirements
           </Button>
           <Button
             variant={viewMode === 'policies' ? 'default' : 'outline'}

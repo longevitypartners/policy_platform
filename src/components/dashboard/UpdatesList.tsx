@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   Select, 
@@ -56,7 +55,7 @@ export const UpdatesList = ({
                 size="sm"
                 onClick={() => onViewModeChange('provisions')}
               >
-                Provisions
+                Requirements
               </Button>
               <Button
                 variant={viewMode === 'policies' ? 'default' : 'outline'}
