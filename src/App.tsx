@@ -14,7 +14,7 @@ import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
-import ErrorBoundary from "./utils/ErrorBoundary";
+import ErrorBoundary from "./pages/ErrorBoundary";
 
 // Create a client
 const queryClient = new QueryClient();
