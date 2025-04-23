@@ -10,8 +10,8 @@ interface ProvisionCardProps {
   provision: Provision;
 }
 
-const formatDate = (dateString: string | null): string => {
-  if (!dateString) return 'Not specified';
+const formatDate = (dateString: unknown): string => {
+  if (typeof dateString !== 'string') return 'Not specified';
   const date = parseISO(dateString);
   if (!isValid(date)) return 'Invalid date';
   return format(date, 'MMMM d, yyyy');
