@@ -1,4 +1,3 @@
-
 export type SortConfig = {
   field: 'risk_rating' | 'last_amended' | 'entry_into_force';
   direction: 'asc' | 'desc';
@@ -11,6 +10,7 @@ export type PolicyFiltersState = {
   riskRatings: string[];
   categories: string[];
   yearsEnforced: string[];
+  policyTypes: string[];
 };
 
 export type ProvisionFiltersState = {
@@ -28,6 +28,7 @@ export type PolicyFilterOptions = {
   riskRatings: string[];
   categories: string[];
   years: string[];
+  policyTypes: string[];
 };
 
 export type ProvisionFilterOptions = {

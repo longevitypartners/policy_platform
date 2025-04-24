@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { PolicyFiltersState, ProvisionFiltersState, ViewMode } from "@/types/search";
 
@@ -8,6 +7,7 @@ export const useSearchFilters = (viewMode: ViewMode) => {
     riskRatings: [],
     categories: [],
     yearsEnforced: [],
+    policyTypes: [],
   });
 
   const [provisionFilters, setProvisionFilters] = useState<ProvisionFiltersState>({
