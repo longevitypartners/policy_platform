@@ -2,7 +2,7 @@
 
 ## Project info
 
-This application is an open source project that allows users to filter and search policies and provisions.
+This application is an open source project that allows users to filter and search policies and provisions .
 
 ## Setup Instructions
 
