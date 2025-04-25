@@ -21,13 +21,18 @@ export const useSearchFilters = (viewMode: ViewMode) => {
   const filters = viewMode === 'policies' ? policyFilters : provisionFilters;
   const setFilters = viewMode === 'policies' ? setPolicyFilters : setProvisionFilters;
 
-  const handleFilterChange = (filterType: keyof (PolicyFiltersState & ProvisionFiltersState), value: string, checked: boolean) => {
-    setFilters(prev => ({
-      ...prev,
-      [filterType]: checked
-        ? [...(prev as any)[filterType], value]
-        : (prev as any)[filterType].filter((item: string) => item !== value)
-    }));
+  const handleFilterChange = (filterType: keyof (PolicyFiltersState & ProvisionFiltersState), value: string) => {
+    setFilters(prev => {
+      const currentFilterValues = (prev as any)[filterType] as string[];
+      const valueExists = currentFilterValues.includes(value);
+
+      return {
+        ...prev,
+        [filterType]: valueExists
+          ? currentFilterValues.filter((item: string) => item !== value)
+          : [...currentFilterValues, value]
+      };
+    });
   };
 
   const handleSelectAll = (filterType: keyof (PolicyFiltersState & ProvisionFiltersState), options: string[]) => {
