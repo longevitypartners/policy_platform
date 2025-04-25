@@ -69,7 +69,8 @@ export const FilterTabs = ({
                     <TabsTrigger 
                       key={tab.value} 
                       value={tab.value}
-                      className="relative h-9 data-[state=active]:bg-white data-[state=active]:shadow-none rounded-md whitespace-nowrap px-3"
+                      className="relative h-9 data-[state=active]:border-[1px] 
+                      data-[state=active]:border-primary rounded-md whitespace-nowrap px-3"
                     >
                       <span className="text-xs sm:text-sm truncate">
                         {tab.label}
