@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Policy, PolicyFilterOptions, Provision, ProvisionFilterOptions } from "@/types/search";
@@ -7,7 +6,7 @@ export const useFilterOptions = () => {
   const { data: policyFilterOptions } = useQuery({
     queryKey: ["policyFilterOptions"],
     queryFn: async () => {
-      const fetchDistinct = async (column: keyof Pick<Policy, 'country' | 'category' | 'entry_into_force' | 'risk_rating'>) => {
+      const fetchDistinct = async (column: keyof Pick<Policy, 'country' | 'category' | 'entry_into_force' | 'risk_rating' | 'policy_type'>) => {
         const { data, error } = await supabase
           .from("policies")
           .select(column)
@@ -20,11 +19,12 @@ export const useFilterOptions = () => {
         return uniqueValues;
       };
 
-      const [countries, categories, years, riskRatings] = await Promise.all([
+      const [countries, categories, years, riskRatings, policyTypes] = await Promise.all([
         fetchDistinct("country"),
         fetchDistinct("category"),
         fetchDistinct("entry_into_force"),
         fetchDistinct("risk_rating"),
+        fetchDistinct("policy_type"),
       ]);
 
       return {
@@ -32,6 +32,7 @@ export const useFilterOptions = () => {
         categories: categories || [],
         years: years || [],
         riskRatings: riskRatings ? riskRatings.map(String) : [],
+        policyTypes: policyTypes || [],
       } as PolicyFilterOptions;
     },
   });

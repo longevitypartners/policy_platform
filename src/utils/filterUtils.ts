@@ -1,4 +1,3 @@
-
 import { PolicyFilterOptions, ProvisionFilterOptions, ViewMode } from "@/types/search";
 
 export const getPolicyFilterTabs = () => [
@@ -6,6 +5,7 @@ export const getPolicyFilterTabs = () => [
   { value: "riskRatings", label: "Risk Rating" },
   { value: "categories", label: "Categories" },
   { value: "yearsEnforced", label: "Entry into Force" },
+  { value: "policyTypes", label: "Policy Type" },
 ];
 
 export const getProvisionFilterTabs = () => [
@@ -34,6 +34,8 @@ export const getFilterOptions = (
         return options.categories || [];
       case "yearsEnforced":
         return options.years || [];
+      case "policyTypes":
+        return options.policyTypes || [];
       default:
         return [];
     }
