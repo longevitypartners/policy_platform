@@ -33,7 +33,7 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[72rem] h-[80vh] flex flex-col overflow-hidden p-0">
-      <div className="overflow-scroll hover-scroll">
+      <div className="overflow-scroll">
 
         <div className="p-6 flex-shrink-0">
           <DialogHeader className="space-y-4">
