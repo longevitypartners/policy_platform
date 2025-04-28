@@ -33,8 +33,8 @@ const Auth = () => {
   const [showTCModal, setShowTCModal] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
-  const SITE_KEY = import.meta.env.VITE_GOOGLE_CAPTCHA_SITE_KEY;
-
+  const SITE_KEY = import.meta.env.VITE_GOOGLE_CAPTCHA_SITE_KEY 
+ 
   const navigate = useNavigate();
   const { toast } = useToast();
 

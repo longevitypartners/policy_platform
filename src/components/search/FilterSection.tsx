@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { PolicyFiltersState, ProvisionFiltersState } from "@/types/search";
@@ -124,9 +123,9 @@ export const FilterSection = ({
       </div>
       <div className="grid grid-cols-2 gap-3 max-h-[60vh] overflow-y-auto pr-2">
         {options.map((option) => (
-          <div
+          <label
             key={option}
-            onClick={() => handleFilterChange(filterType, option, !selectedValues.includes(option))}
+            htmlFor={`${filterType}-${option}`}
             className={`
               p-3 rounded-lg border cursor-pointer transition-all
               ${selectedValues.includes(option)
@@ -139,18 +138,15 @@ export const FilterSection = ({
               <Checkbox
                 id={`${filterType}-${option}`}
                 checked={selectedValues.includes(option)}
-                onCheckedChange={(checked) => 
+                onCheckedChange={(checked) =>
                   handleFilterChange(filterType, option, checked === true)
                 }
               />
-              <label
-                htmlFor={`${filterType}-${option}`}
-                className="text-sm leading-none flex-1 cursor-pointer"
-              >
+              <span className="text-sm leading-none flex-1">
                 {option}
-              </label>
+              </span>
             </div>
-          </div>
+          </label>
         ))}
       </div>
     </div>

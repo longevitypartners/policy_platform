@@ -52,6 +52,9 @@ const Search = () => {
       if (policyFilters.riskRatings.length > 0) {
         query = query.in('risk_rating', policyFilters.riskRatings.map(Number));
       }
+      if (policyFilters.policyTypes.length > 0) {
+        query = query.in('policy_type', policyFilters.policyTypes);
+      }
 
       const { data, error } = await query;
       

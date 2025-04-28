@@ -14,6 +14,7 @@ import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
+import ErrorBoundary from "./pages/ErrorBoundary";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -51,6 +52,7 @@ function App() {
             <div className="min-h-screen flex w-full">
               {session && <AppSidebar />}
               <main className="flex-1">
+                <ErrorBoundary>
                 <Routes>
                   <Route 
                     path="/" 
@@ -74,6 +76,7 @@ function App() {
                   />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
+                </ErrorBoundary>
                 <Toaster />
                 <Sonner />
               </main>

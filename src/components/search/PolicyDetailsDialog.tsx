@@ -105,7 +105,7 @@ export const PolicyDetailsDialog = ({ policy, open, onOpenChange }: PolicyDetail
                   className="text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground rounded-md h-10"
                 >
                   <div className="flex items-center gap-2">
-                    Provisions
+                    Requirements
                     <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-primary">
                       <span className="text-xs font-medium text-white">
                         {provisions.length}
@@ -174,7 +174,7 @@ export const PolicyDetailsDialog = ({ policy, open, onOpenChange }: PolicyDetail
                 <TabsContent value="provisions" className="h-full absolute inset-0">
                   <TabContentWrapper>
                     <div className="h-full">
-                      <h2 className="text-xl font-semibold mb-4">Provisions</h2>
+                      <h2 className="text-xl font-semibold mb-4">Requirements</h2>
                       {provisions.length > 0 ? (
                         <div className="space-y-4">
                           {provisions.map((provision) => (
@@ -189,7 +189,7 @@ export const PolicyDetailsDialog = ({ policy, open, onOpenChange }: PolicyDetail
                           <div className="bg-muted/50 rounded-lg p-8 text-center">
                             <ListChecks className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
                             <p className="text-sm text-muted-foreground">
-                              There are no provisions associated with this policy.
+                              There are no requirements associated with this policy.
                             </p>
                           </div>
                         </div>

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -143,7 +142,7 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
         <Table>
           <TableHeader className="sticky top-0 bg-white z-10">
             <TableRow>
-              <SortableHeader field="requirement">Provision</SortableHeader>
+              <SortableHeader field="requirement">Requirement</SortableHeader>
               <SortableHeader field="country">Country</SortableHeader>
               <SortableHeader field="topic">Topic</SortableHeader>
               <SortableHeader field="year_of_enforcement">Year of Enforcement</SortableHeader>
@@ -152,7 +151,7 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
           <TableBody>
             <TableRow>
               <TableCell colSpan={4} className="text-center h-24 text-muted-foreground">
-                Loading provisions...
+                Loading requirements...
               </TableCell>
             </TableRow>
           </TableBody>
@@ -167,7 +166,7 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
         <Table>
           <TableHeader className="sticky top-0 bg-white z-10">
             <TableRow>
-              <SortableHeader field="requirement">Provision</SortableHeader>
+              <SortableHeader field="requirement">Requirement</SortableHeader>
               <SortableHeader field="country">Country</SortableHeader>
               <SortableHeader field="topic">Topic</SortableHeader>
               <SortableHeader field="year_of_enforcement">Year of Enforcement</SortableHeader>
@@ -176,7 +175,7 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
           <TableBody>
             <TableRow>
               <TableCell colSpan={4} className="text-center h-24 text-muted-foreground text-red-600">
-                Error loading provisions: {error.message}
+                Error loading requirements: {error.message}
               </TableCell>
             </TableRow>
           </TableBody>
@@ -192,7 +191,7 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
         <Table>
           <TableHeader className="sticky top-0 bg-white z-10">
             <TableRow>
-              <SortableHeader field="requirement">Provision</SortableHeader>
+              <SortableHeader field="requirement">Requirement</SortableHeader>
               <SortableHeader field="country">Country</SortableHeader>
               <SortableHeader field="topic">Topic</SortableHeader>
               <SortableHeader field="year_of_enforcement">Year of Enforcement</SortableHeader>
@@ -223,7 +222,7 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
             ) : (
               <TableRow>
                 <TableCell colSpan={4} className="text-center h-24 text-muted-foreground">
-                  No provisions found
+                  No requirements found
                 </TableCell>
               </TableRow>
             )}

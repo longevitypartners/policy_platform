@@ -60,7 +60,7 @@ export const CountriesMap = ({ data, isLoading }: CountriesMapProps) => {
       <CardHeader className="pb-2">
         <CardTitle className="mb-4">Policy Coverage</CardTitle>
         <div className="text-sm text-muted-foreground space-y-1">
-          <p>Your plan covers {totalPolicies} policies and {totalProvisions} provisions across {totalCountries} countries.</p>
+          <p>Your plan covers {totalPolicies} policies and {totalProvisions} requirements across {totalCountries} countries.</p>
           <p>Please select each country below to see its policy coverage.</p>
         </div>
       </CardHeader>
@@ -109,7 +109,7 @@ export const CountriesMap = ({ data, isLoading }: CountriesMapProps) => {
                             tooltip.innerHTML = `
                               <p class="font-semibold">${geo.properties.NAME}</p>
                               <p>Policies: ${countryData?.count || 0}</p>
-                              <p>Provisions: ${provisionsCount}</p>
+                              <p>Requirements: ${provisionsCount}</p>
                             `;
                             tooltip.style.position = 'fixed';
                             tooltip.style.left = `${event.clientX + 10}px`;

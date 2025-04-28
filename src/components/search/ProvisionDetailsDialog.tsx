@@ -33,6 +33,8 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[72rem] h-[80vh] flex flex-col overflow-hidden p-0">
+      <div className="overflow-scroll">
+
         <div className="p-6 flex-shrink-0">
           <DialogHeader className="space-y-4">
             <div className="space-y-2">
@@ -43,7 +45,7 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
                 </div>
               )}
               <DialogTitle className="text-xl font-semibold">
-                {provision.requirement || "Untitled Provision"}
+                {provision.requirement || "Untitled Requirement"}
               </DialogTitle>
             </div>
             
@@ -131,6 +133,7 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
             </div>
           </Tabs>
         </div>
+      </div>
       </DialogContent>
     </Dialog>
   );
