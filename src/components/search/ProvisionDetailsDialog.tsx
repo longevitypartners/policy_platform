@@ -1,5 +1,5 @@
-
-import { Provision } from "@/types/search";
+import { useState } from "react";
+import { Provision, Policy } from "@/types/search";
 import {
   Dialog,
   DialogContent,
@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { 
+import {
   Calendar,
   FileText,
   Globe,
@@ -20,6 +20,9 @@ import { OverviewTab } from "./components/tabs/OverviewTab";
 import { DescriptionTab } from "./components/tabs/DescriptionTab";
 import { RecommendationsTab } from "./components/tabs/RecommendationsTab";
 import { ResourcesTab } from "./components/tabs/ResourcesTab";
+import { PolicyDetailsDialog } from "./PolicyDetailsDialog";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface ProvisionDetailsDialogProps {
   provision: Provision | null;
@@ -28,113 +31,191 @@ interface ProvisionDetailsDialogProps {
 }
 
 export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: ProvisionDetailsDialogProps) => {
+  const [selectedPolicy, setSelectedPolicy] = useState<Policy | null>(null);
+  const [isPolicyDetailsOpen, setIsPolicyDetailsOpen] = useState(false);
+  const [isLoadingPolicy, setIsLoadingPolicy] = useState(false);
+
   if (!provision) return null;
 
+  const handlePolicyClick = async () => {
+    if (!provision.policy_id) {
+      toast.error("No associated policy found.");
+      return;
+    }
+
+    setIsLoadingPolicy(true);
+    try {
+      const { data: policyData, error } = await supabase
+        .from("policies")
+        .select(`
+          *,
+          provisions (
+            provision_id,
+            requirement,
+            description,
+            minimum_requirement,
+            best_practice,
+            subject_to_obligation,
+            asset_class,
+            building_status,
+            country,
+            year_of_enforcement,
+            year_in_force,
+            policy,
+            policy_id,
+            topic,
+            url_minimum_standards,
+            url_best_practice
+          )
+        `)
+        .eq('policy_id', provision.policy_id)
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      if (policyData) {
+        const transformedPolicy = {
+          ...policyData,
+          provisions_count: policyData.provisions?.length || 0
+        } as Policy;
+        setSelectedPolicy(transformedPolicy);
+        setIsPolicyDetailsOpen(true);
+      } else {
+        toast.error("Policy details not found.");
+      }
+    } catch (error: any) {
+      console.error("Error fetching policy details:", error);
+      toast.error(`Failed to fetch policy details: ${error.message}`);
+    } finally {
+      setIsLoadingPolicy(false);
+    }
+  };
+
+  const handlePolicyDetailsOpenChange = (isOpen: boolean) => {
+    setIsPolicyDetailsOpen(isOpen);
+    if (!isOpen) {
+      setSelectedPolicy(null);
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[72rem] h-[80vh] flex flex-col overflow-hidden p-0">
-      <div className="overflow-scroll">
+    <>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-[72rem] h-[80vh] flex flex-col overflow-hidden p-0">
+          <div className="overflow-scroll">
 
-        <div className="p-6 flex-shrink-0">
-          <DialogHeader className="space-y-4">
-            <div className="space-y-2">
-              {provision.topic && (
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <FileText className="h-4 w-4" />
-                  <span>{provision.topic}</span>
+            <div className="p-6 flex-shrink-0">
+              <DialogHeader className="space-y-4">
+                <div className="space-y-2">
+                  {provision.topic && (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <FileText className="h-4 w-4" />
+                      <span>{provision.topic}</span>
+                    </div>
+                  )}
+                  <DialogTitle className="text-xl font-semibold">
+                    {provision.requirement || "Untitled Requirement"}
+                  </DialogTitle>
                 </div>
-              )}
-              <DialogTitle className="text-xl font-semibold">
-                {provision.requirement || "Untitled Requirement"}
-              </DialogTitle>
+
+                <div className="grid grid-cols-4 gap-4">
+                  <KeyMetric
+                    icon={BookOpen}
+                    label="Associated Policy"
+                    value={provision.policy || "Not specified"}
+                    isClickable={!!provision.policy_id}
+                    onClick={handlePolicyClick}
+                    isLoading={isLoadingPolicy}
+                  />
+                  <KeyMetric
+                    icon={Globe}
+                    label="Country"
+                    value={provision.country || "Not specified"}
+                  />
+                  <KeyMetric
+                    icon={Calendar}
+                    label="Introduced"
+                    value={provision.year_in_force || "Not specified"}
+                  />
+                  <KeyMetric
+                    icon={Calendar}
+                    label="Enforced"
+                    value={provision.year_of_enforcement || "Not specified"}
+                  />
+                </div>
+              </DialogHeader>
             </div>
-            
-            <div className="grid grid-cols-4 gap-4">
-              <KeyMetric 
-                icon={BookOpen} 
-                label="Associated Policy" 
-                value={provision.policy || "Not specified"}
-              />
-              <KeyMetric 
-                icon={Globe} 
-                label="Country" 
-                value={provision.country || "Not specified"} 
-              />
-              <KeyMetric 
-                icon={Calendar} 
-                label="Introduced" 
-                value={provision.year_in_force || "Not specified"} 
-              />
-              <KeyMetric 
-                icon={Calendar} 
-                label="Enforced" 
-                value={provision.year_of_enforcement || "Not specified"} 
-              />
+
+            <Separator />
+
+            <div className="flex-1 overflow-hidden inset-0 overflow-y-auto py-4 px-6">
+              <Tabs defaultValue="overview" className="h-full flex flex-col">
+                <TabsList className="grid w-full grid-cols-4 bg-muted p-1">
+                  <TabsTrigger
+                    value="overview"
+                    className="text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground rounded-md h-10"
+                  >
+                    Overview
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="description"
+                    className="text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground rounded-md h-10"
+                  >
+                    Description
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="recommendations"
+                    className="text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground rounded-md h-10"
+                  >
+                    Recommendations
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="resources"
+                    className="text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground rounded-md h-10"
+                  >
+                    Resources
+                  </TabsTrigger>
+                </TabsList>
+
+                <div className="flex-1 overflow-hidden">
+                  <TabsContent value="overview" className="mt-6 mx-6 h-full">
+                    <div className="h-full hover-scroll">
+                      <h2 className="text-xl font-semibold mb-6">Overview</h2>
+                      <OverviewTab provision={provision} />
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="description" className="mt-6 mx-6 h-full">
+                    <div className="h-full hover-scroll">
+                      <DescriptionTab provision={provision} />
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="recommendations" className="mt-6 mx-6 h-full">
+                    <div className="h-full hover-scroll">
+                      <RecommendationsTab provision={provision} />
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="resources" className="mt-6 mx-6 h-full">
+                    <div className="h-full hover-scroll">
+                      <ResourcesTab provision={provision} />
+                    </div>
+                  </TabsContent>
+                </div>
+              </Tabs>
             </div>
-          </DialogHeader>
-        </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
-        <Separator />
-
-        <div className="flex-1 overflow-hidden inset-0 overflow-y-auto py-4 px-6">
-          <Tabs defaultValue="overview" className="h-full flex flex-col">
-            <TabsList className="grid w-full grid-cols-4 bg-muted p-1">
-              <TabsTrigger 
-                value="overview"
-                className="text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground rounded-md h-10"
-              >
-                Overview
-              </TabsTrigger>
-              <TabsTrigger 
-                value="description"
-                className="text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground rounded-md h-10"
-              >
-                Description
-              </TabsTrigger>
-              <TabsTrigger 
-                value="recommendations"
-                className="text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground rounded-md h-10"
-              >
-                Recommendations
-              </TabsTrigger>
-              <TabsTrigger 
-                value="resources"
-                className="text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground rounded-md h-10"
-              >
-                Resources
-              </TabsTrigger>
-            </TabsList>
-
-            <div className="flex-1 overflow-hidden">
-              <TabsContent value="overview" className="mt-6 mx-6 h-full">
-                <div className="h-full hover-scroll">
-                  <h2 className="text-xl font-semibold mb-6">Overview</h2>
-                  <OverviewTab provision={provision} />
-                </div>
-              </TabsContent>
-
-              <TabsContent value="description" className="mt-6 mx-6 h-full">
-                <div className="h-full hover-scroll">
-                  <DescriptionTab provision={provision} />
-                </div>
-              </TabsContent>
-
-              <TabsContent value="recommendations" className="mt-6 mx-6 h-full">
-                <div className="h-full hover-scroll">
-                  <RecommendationsTab provision={provision} />
-                </div>
-              </TabsContent>
-
-              <TabsContent value="resources" className="mt-6 mx-6 h-full">
-              <div className="h-full hover-scroll">
-                  <ResourcesTab provision={provision} />
-                </div>
-              </TabsContent>
-            </div>
-          </Tabs>
-        </div>
-      </div>
-      </DialogContent>
-    </Dialog>
+      <PolicyDetailsDialog
+        policy={selectedPolicy}
+        open={isPolicyDetailsOpen}
+        onOpenChange={handlePolicyDetailsOpenChange}
+      />
+    </>
   );
 };
