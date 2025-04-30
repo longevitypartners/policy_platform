@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { KeyMetric } from "./components/KeyMetric";
-import { TabContentWrapper } from "./components/TabContentWrapper";
 import { OverviewTab } from "./components/tabs/OverviewTab";
 import { DescriptionTab } from "./components/tabs/DescriptionTab";
 import { RecommendationsTab } from "./components/tabs/RecommendationsTab";
@@ -103,8 +102,8 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-[72rem] h-[80vh] flex flex-col overflow-hidden p-0">
-          <div className="overflow-scroll">
+        <DialogContent className="max-w-[72rem] h-[80vh] overflow-scroll p-0">
+          <div className="flex flex-col">
 
             <div className="p-6 flex-shrink-0">
               <DialogHeader className="space-y-4">
@@ -150,7 +149,7 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
 
             <Separator />
 
-            <div className="flex-1 overflow-hidden inset-0 overflow-y-auto py-4 px-6">
+            <div className="flex-1 inset-0 py-4 px-6">
               <Tabs defaultValue="overview" className="h-full flex flex-col">
                 <TabsList className="grid w-full grid-cols-4 bg-muted p-1">
                   <TabsTrigger
@@ -179,7 +178,7 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
                   </TabsTrigger>
                 </TabsList>
 
-                <div className="flex-1 overflow-hidden">
+                <div className="flex-1">
                   <TabsContent value="overview" className="mt-6 mx-6 h-full">
                     <div className="h-full hover-scroll">
                       <h2 className="text-xl font-semibold mb-6">Overview</h2>
