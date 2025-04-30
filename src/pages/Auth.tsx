@@ -354,7 +354,7 @@ const Auth = () => {
                 <ReCAPTCHA
                   sitekey={SITE_KEY}
                   onChange={(token: string | null) => setCaptchaToken(token)}
-                  className="pt-4"
+                  className="pt-4 z-50"
                 />
               </div>
             </div>
