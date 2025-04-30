@@ -151,16 +151,18 @@ const Auth = () => {
       if (error) {
         throw error;
       }
+      console.log("Preparing to send email notification for new signup request...");
       const resend = new Resend("re_W7xvGNAb_DCfoLmwtQQjUy99abMqY97oG");
       await resend.emails.send({
         from: "onboarding@resend.dev",
         to: "du@longevity.co.uk",
         subject: "New Signup Request",
         html: `<p>A new signup request has been added:</p>
-             <p>Email: ${signupEmail}</p>
-             <p>Organization: ${organization}</p>
-             <p>Regions: ${regions.join(", ")}</p>`,
+         <p>Email: ${signupEmail}</p>
+         <p>Organization: ${organization}</p>
+         <p>Regions: ${regions.join(", ")}</p>`,
       });
+      console.log("Email notification sent successfully.");
       // const bearer =
       //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNnYml4YXptb3BycXJmdnVncXFpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg3NTY0NDEsImV4cCI6MjA1NDMzMjQ0MX0.0zaITk13su7SB3eto6l-Flt2LAykIsDajWueKhr1VNM";
       // const { error: functionError } = await fetch(
