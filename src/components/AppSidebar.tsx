@@ -84,7 +84,7 @@ export function AppSidebar() {
           <SidebarContent>
             {/* Logo Section */}
             <div className="p-6 mb-4 mx-auto">
-            <img src={Logo} alt="Policy Tracker Logo" className="w-full pr-2 -ml-1" />
+              <img src={Logo} alt="Policy Tracker Logo" className="w-full pr-2 -ml-1" />
               <div className="flex justify-start px-2">
                 <span className="text-xl font-bold text-black">Policy Tracker</span>
               </div>
@@ -103,19 +103,17 @@ export function AppSidebar() {
                         }}
                       >
                         <div
-                          className={`flex items-center px-4 py-2 cursor-pointer hover:bg-gray-50 transition-colors w-full ${
-                            location.pathname === item.path
-                              ? "bg-primary text-white hover:bg-primary/90"
-                              : ""
-                          }`}
+                          className={`flex items-center px-4 py-2 cursor-pointer transition-colors w-full ${location.pathname === item.path
+                            ? "bg-primary text-white hover:bg-primary"
+                            : "hover:bg-foreground/15"
+                            }`}
                         >
                           {item.icon && (
                             <item.icon
-                              className={`w-5 h-5 mr-3 text-gray-600 ${
-                                location.pathname === item.path
-                                  ? "text-primary-foreground"
-                                  : ""
-                              }`}
+                              className={`w-5 h-5 mr-3 text-gray-600 ${location.pathname === item.path
+                                ? "text-primary-foreground"
+                                : ""
+                                }`}
                             />
                           )}
                           <span className="text-sm">{item.title}</span>
@@ -152,7 +150,7 @@ export function AppSidebar() {
                   ))}
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild onClick={handleSignOut}>
-                      <div className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-50 transition-colors w-full">
+                      <div className="flex items-center px-4 py-2 cursor-pointer hover:bg-foreground/15 transition-colors w-full">
                         <LogOut className="w-5 h-5 mr-3 text-gray-600" />
                         <span className="text-sm text-gray-900">Sign Out</span>
                       </div>
