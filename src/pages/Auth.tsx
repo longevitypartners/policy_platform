@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import axios from "axios";
 import LoginSideBar from "./LoginSideBar";
 import {
   Dialog,
@@ -34,6 +35,15 @@ const Auth = () => {
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const SITE_KEY = import.meta.env.VITE_GOOGLE_CAPTCHA_SITE_KEY;
+
+  const sendEmailApiUrl =
+    process.env.NODE_ENV === "production"
+      ? import.meta.env.VITE_PROD_SEND_EMAIL_API ||
+        "https://ypi31unyij.execute-api.us-east-1.amazonaws.com/prod"
+      : import.meta.env.VITE_STAGING_SEND_EMAIL_API ||
+        "https://ypi31unyij.execute-api.us-east-1.amazonaws.com/staging";
+
+  const sendEmailAuth = import.meta.env.VITE_SEND_EMAIL_API_KEY || 'oON6GJSBcg2qrHC4PaUzW1JLJ5se4QIz5xJA71yL'
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -150,6 +160,20 @@ const Auth = () => {
       if (error) {
         throw error;
       }
+      await axios.post(
+        `${sendEmailApiUrl}`,
+        {
+          email: signupEmail,
+          organization,
+          regions,
+        },
+        {
+          headers: {
+            "x-api-key": sendEmailAuth,
+          },
+        }
+      );
+
       setShowSignupModal(false);
       setAcceptedTerms(false);
       toast({
