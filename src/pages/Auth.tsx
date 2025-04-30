@@ -36,14 +36,15 @@ const Auth = () => {
 
   const SITE_KEY = import.meta.env.VITE_GOOGLE_CAPTCHA_SITE_KEY;
 
-  const sendEmailApiUrl =
-    process.env.NODE_ENV === "production"
-      ? import.meta.env.VITE_PROD_SEND_EMAIL_API ||
-        "https://ypi31unyij.execute-api.us-east-1.amazonaws.com/prod"
-      : import.meta.env.VITE_STAGING_SEND_EMAIL_API ||
-        "https://ypi31unyij.execute-api.us-east-1.amazonaws.com/staging";
+  // const sendEmailApiUrl =
+  //   process.env.NODE_ENV === "production"
+  //     ? import.meta.env.VITE_PROD_SEND_EMAIL_API ||
+  //       "https://ypi31unyij.execute-api.us-east-1.amazonaws.com/prod"
+  //     : import.meta.env.VITE_STAGING_SEND_EMAIL_API ||
+  //       "https://ypi31unyij.execute-api.us-east-1.amazonaws.com/staging";
+  const sendEmailApiUrl = import.meta.env.VITE_STAGING_SEND_EMAIL_API ||  "https://w2vnwfggae.execute-api.us-east-1.amazonaws.com/staging";
 
-  const sendEmailAuth = import.meta.env.VITE_SEND_EMAIL_API_KEY || 'oON6GJSBcg2qrHC4PaUzW1JLJ5se4QIz5xJA71yL'
+  // const sendEmailAuth = import.meta.env.VITE_SEND_EMAIL_API_KEY || 'oON6GJSBcg2qrHC4PaUzW1JLJ5se4QIz5xJA71yL'
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -160,18 +161,17 @@ const Auth = () => {
       if (error) {
         throw error;
       }
-      await axios.post(
-        `${sendEmailApiUrl}`,
+      await axios.post(sendEmailApiUrl,
         {
           email: signupEmail,
           organization,
           regions,
         },
-        {
-          headers: {
-            "x-api-key": sendEmailAuth,
-          },
-        }
+        // {
+        //   headers: {
+        //     "x-api-key": sendEmailAuth,
+        //   },
+        // }
       );
 
       setShowSignupModal(false);
