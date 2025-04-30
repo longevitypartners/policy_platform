@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import Resend from "resend";
+import { Resend } from "resend";
 import LoginSideBar from "./LoginSideBar";
 import {
   Dialog,
@@ -34,8 +34,8 @@ const Auth = () => {
   const [showTCModal, setShowTCModal] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
-  const SITE_KEY = import.meta.env.VITE_GOOGLE_CAPTCHA_SITE_KEY 
- 
+  const SITE_KEY = import.meta.env.VITE_GOOGLE_CAPTCHA_SITE_KEY;
+
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -151,7 +151,7 @@ const Auth = () => {
       if (error) {
         throw error;
       }
-            const resend = new Resend("re_W7xvGNAb_DCfoLmwtQQjUy99abMqY97oG");
+      const resend = new Resend("re_W7xvGNAb_DCfoLmwtQQjUy99abMqY97oG");
       await resend.emails.send({
         from: "onboarding@resend.dev",
         to: "du@longevity.co.uk",
@@ -275,8 +275,8 @@ const Auth = () => {
                   {loading
                     ? "Loading..."
                     : isForgotPassword
-                    ? "Reset Password"
-                    : "Log In"}
+                      ? "Reset Password"
+                      : "Log In"}
                 </Button>
               </div>
             </form>
