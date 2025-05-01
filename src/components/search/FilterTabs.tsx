@@ -59,7 +59,7 @@ export const FilterTabs = ({
         </SheetTrigger>
         <SheetContent className="w-full sm:max-w-md">
           <SheetHeader>
-            <SheetTitle>{viewMode === 'policies' ? 'Filter by Policy' : 'Filter by Requirement'}</SheetTitle>
+            <SheetTitle>{viewMode === 'policies' ? 'Filter Policies' : 'Filter Requirements'}</SheetTitle>
           </SheetHeader>
           <div className="mt-6">
             <Tabs value={activeFilterTab} onValueChange={setActiveFilterTab}>
