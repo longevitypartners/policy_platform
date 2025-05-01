@@ -59,15 +59,15 @@ export const FilterTabs = ({
         </SheetTrigger>
         <SheetContent className="w-full sm:max-w-md">
           <SheetHeader>
-            <SheetTitle>{viewMode === 'policies' ? 'Policy Filters' : 'Provision Filters'}</SheetTitle>
+            <SheetTitle>{viewMode === 'policies' ? 'Filter by Policy' : 'Filter by Requirement'}</SheetTitle>
           </SheetHeader>
           <div className="mt-6">
             <Tabs value={activeFilterTab} onValueChange={setActiveFilterTab}>
               <div className="border rounded-lg p-1 bg-muted/50">
                 <TabsList className="w-full grid grid-cols-2 h-auto gap-1">
                   {filterTabs.map((tab) => (
-                    <TabsTrigger 
-                      key={tab.value} 
+                    <TabsTrigger
+                      key={tab.value}
                       value={tab.value}
                       className="relative h-9 data-[state=active]:border-[1px] 
                       data-[state=active]:border-primary rounded-md whitespace-nowrap px-3"
