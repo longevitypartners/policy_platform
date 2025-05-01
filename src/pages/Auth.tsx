@@ -42,7 +42,9 @@ const Auth = () => {
   //       "https://ypi31unyij.execute-api.us-east-1.amazonaws.com/prod"
   //     : import.meta.env.VITE_STAGING_SEND_EMAIL_API ||
   //       "https://ypi31unyij.execute-api.us-east-1.amazonaws.com/staging";
-  const sendEmailApiUrl = import.meta.env.VITE_STAGING_SEND_EMAIL_API ||  "https://w2vnwfggae.execute-api.us-east-1.amazonaws.com/staging";
+  const sendEmailApiUrl =
+    import.meta.env.VITE_STAGING_SEND_EMAIL_API ||
+    "https://w2vnwfggae.execute-api.us-east-1.amazonaws.com/staging";
 
   // const sendEmailAuth = import.meta.env.VITE_SEND_EMAIL_API_KEY || 'oON6GJSBcg2qrHC4PaUzW1JLJ5se4QIz5xJA71yL'
 
@@ -161,18 +163,23 @@ const Auth = () => {
       if (error) {
         throw error;
       }
-      await axios.post(sendEmailApiUrl,
-        {
-          email: signupEmail,
-          organization,
-          regions,
-        },
-        // {
-        //   headers: {
-        //     "x-api-key": sendEmailAuth,
-        //   },
-        // }
-      );
+      await axios
+        .post(
+          sendEmailApiUrl,
+          {
+            email: signupEmail,
+            organization,
+            regions,
+          }
+          // {
+          //   headers: {
+          //     "x-api-key": sendEmailAuth,
+          //   },
+          // }
+        )
+        .catch((error) => {
+          console.warn(error.message);
+        });
 
       setShowSignupModal(false);
       setAcceptedTerms(false);
