@@ -133,14 +133,15 @@ const Auth = () => {
   const isLocalhost = window.location.hostname === "localhost";
 
   const handleSignUpSubmit = async () => {
-    if (
+    const isFormInvalid =
       !signupEmail ||
       !validateEmail(signupEmail) ||
       !organization ||
       regions.length === 0 ||
       !acceptedTerms ||
-      (!isLocalhost && !captchaToken)
-    ) {
+      (!isLocalhost && !captchaToken);
+  
+    if (isFormInvalid) {
       toast({
         title: "Error",
         description: "Please fill in all fields and accept the terms.",
@@ -148,9 +149,36 @@ const Auth = () => {
       });
       return;
     }
-
+  
     try {
-      const { data, error } = await supabase.from("signup_requests").insert([
+      setLoading(true);
+
+      const { data: existingRequest, error: selectError } = await supabase
+        .from("signup_requests")
+        .select("id")
+        .eq("email", signupEmail)
+        .limit(1);
+  
+      if (selectError) {
+        console.error("Error checking for existing email:", selectError);
+        toast({
+          title: "Submission Error",
+          description: "An error occurred while checking for existing requests.",
+          variant: "destructive",
+        });
+        return;
+      }
+  
+      if (existingRequest && existingRequest.length > 0) {
+        toast({
+          title: "Duplicate Request",
+          description: "This email has already requested access.",
+          variant: "default",
+        });
+        return; 
+      }
+  
+      const { error: insertError } = await supabase.from("signup_requests").insert([
         {
           email: signupEmail,
           organization,
@@ -159,28 +187,26 @@ const Auth = () => {
           captcha_token: captchaToken,
         },
       ]);
-
-      if (error) {
-        throw error;
-      }
-      await axios
-        .post(
-          sendEmailApiUrl,
-          {
-            email: signupEmail,
-            organization,
-            regions,
-          }
-          // {
-          //   headers: {
-          //     "x-api-key": sendEmailAuth,
-          //   },
-          // }
-        )
-        .catch((error) => {
-          console.warn(error.message);
+  
+      if (insertError) {
+        console.error("Error inserting signup request:", insertError);
+        toast({
+          title: "Submission Error",
+          description:
+            insertError.message || "An error occurred while submitting your request.",
+          variant: "destructive",
         });
-
+        return;
+      }
+  
+      axios
+        .post(sendEmailApiUrl, {
+          email: signupEmail,
+          organization,
+          regions,
+        })
+        .catch((err) => console.warn("Email notification failed:", err.message));
+  
       setShowSignupModal(false);
       setAcceptedTerms(false);
       toast({
@@ -189,12 +215,16 @@ const Auth = () => {
       });
     } catch (error: any) {
       toast({
-        title: "Error",
-        description: error.message,
+        title: "Submission Error",
+        description:
+          error.message || "An unexpected error occurred during submission.",
         variant: "destructive",
       });
+    } finally {
+      setLoading(false);
     }
   };
+  
 
   return (
     <div className="flex flex-wrap md:flex-nowrap flex-row justify-between h-full">
