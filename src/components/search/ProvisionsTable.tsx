@@ -51,8 +51,8 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
           url_minimum_standards,
           url_best_practice
         `)
-        
-      
+
+
       if (filters.countries.length > 0) {
         query = query.in('country', filters.countries);
       }
@@ -68,9 +68,9 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
       if (filters.assetClasses.length > 0) {
         query = query.in('asset_class', filters.assetClasses);
       }
-      
+
       const { data, error } = await query;
-      
+
       if (error) {
         throw error;
       }
@@ -79,16 +79,14 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
       let filteredData = data;
       if (searchQuery) {
         const searchLower = searchQuery.toLowerCase();
-        filteredData = data.filter((provision: Provision) => 
+        filteredData = data.filter((provision: Provision) =>
           provision.requirement?.toLowerCase().includes(searchLower) ||
+          provision.description?.toLowerCase().includes(searchLower) ||
           provision.country?.toLowerCase().includes(searchLower) ||
-          provision.topic?.toLowerCase().includes(searchLower) ||
-          provision.year_of_enforcement?.toString().includes(searchLower) ||
-          provision.building_status?.toLowerCase().includes(searchLower) ||
-          provision.asset_class?.toLowerCase().includes(searchLower)
+          provision.topic?.toLowerCase().includes(searchLower)
         );
       }
-      
+
       return filteredData as Provision[];
     },
   });
@@ -116,7 +114,7 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
 
     const aString = String(aValue).toLowerCase();
     const bString = String(bValue).toLowerCase();
-    return sortDirection === 'asc' 
+    return sortDirection === 'asc'
       ? aString.localeCompare(bString)
       : bString.localeCompare(aString);
   }) : [];
@@ -187,7 +185,7 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
   return (
     <>
       <div>
-        
+
         <Table>
           <TableHeader className="sticky top-0 bg-white z-10">
             <TableRow>
@@ -200,7 +198,7 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
           <TableBody>
             {sortedProvisions && sortedProvisions.length > 0 ? (
               sortedProvisions.map((provision, index) => (
-                <TableRow 
+                <TableRow
                   key={provision.provision_id}
                   className={cn(
                     "cursor-pointer",
@@ -230,7 +228,7 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
         </Table>
       </div>
 
-      <ProvisionDetailsDialog 
+      <ProvisionDetailsDialog
         provision={selectedProvision}
         open={isDetailsOpen}
         onOpenChange={setIsDetailsOpen}

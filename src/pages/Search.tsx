@@ -85,9 +85,8 @@ const Search = () => {
         transformedData = transformedData.filter(policy =>
           policy.title?.toLowerCase().includes(searchLower) ||
           policy.country?.toLowerCase().includes(searchLower) ||
-          policy.category?.toLowerCase().includes(searchLower) ||
-          policy.entry_into_force?.toString().includes(searchLower) ||
-          policy.last_amended?.toString().includes(searchLower)
+          policy.description?.toLowerCase().includes(searchLower) ||
+          policy.category?.toLowerCase().includes(searchLower)
         );
       }
 
