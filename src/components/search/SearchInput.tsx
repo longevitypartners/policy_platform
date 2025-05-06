@@ -22,6 +22,14 @@ export const SearchInput = ({ searchQuery, setSearchQuery }: SearchInputProps) =
     debouncedSetSearchQuery(value);
   }
 
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Escape') {
+      setInputValue("");
+      setSearchQuery("");
+      (e.target as HTMLInputElement).blur();
+    }
+  }
+
   useEffect(() => {
     return () => {
       debouncedSetSearchQuery.cancel();
@@ -32,6 +40,7 @@ export const SearchInput = ({ searchQuery, setSearchQuery }: SearchInputProps) =
     <div className="relative w-full sm:max-w-md">
       <Input
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
         placeholder="Search by keyword"
         value={inputValue}
         className="pr-10"
