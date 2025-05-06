@@ -17,13 +17,13 @@ const Search = () => {
   const [activeFilterTab, setActiveFilterTab] = useState<string>("countries");
 
   const { policyFilterOptions, provisionFilterOptions } = useFilterOptions();
-  const { 
-    policyFilters, 
-    provisionFilters, 
+  const {
+    policyFilters,
+    provisionFilters,
     filters,
     handleFilterChange,
     handleSelectAll,
-    handleClearAll 
+    handleClearAll
   } = useSearchFilters(viewMode);
 
   const { data: policies, isLoading: isPoliciesLoading } = useQuery({
@@ -34,9 +34,22 @@ const Search = () => {
         .select(`
           *,
           provisions (
-            provision_id,
-            requirement,
-            year_of_enforcement
+          provision_id,
+          requirement,
+          description,
+          minimum_requirement,
+          best_practice,
+          subject_to_obligation,
+          asset_class,
+          building_status,
+          country,
+          year_of_enforcement,
+          year_in_force,
+          policy,
+          policy_id,
+          topic,
+          url_minimum_standards,
+          url_best_practice
           )
         `)
 
@@ -57,7 +70,7 @@ const Search = () => {
       }
 
       const { data, error } = await query;
-      
+
       if (error) {
         throw error;
       }
@@ -69,15 +82,14 @@ const Search = () => {
 
       if (searchQuery) {
         const searchLower = searchQuery.toLowerCase();
-        transformedData = transformedData.filter(policy => 
+        transformedData = transformedData.filter(policy =>
           policy.title?.toLowerCase().includes(searchLower) ||
           policy.country?.toLowerCase().includes(searchLower) ||
-          policy.category?.toLowerCase().includes(searchLower) ||
-          policy.entry_into_force?.toString().includes(searchLower) ||
-          policy.last_amended?.toString().includes(searchLower)
+          policy.description?.toLowerCase().includes(searchLower) ||
+          policy.category?.toLowerCase().includes(searchLower)
         );
       }
-      
+
       return transformedData;
     },
     enabled: viewMode === 'policies',
@@ -96,7 +108,7 @@ const Search = () => {
     <div className="flex-1 py-4 sm:py-6">
       <div className="container mx-auto px-2 sm:px-4 lg:px-6 max-w-[1400px]">
         <div className="mb-6 sm:mb-8">
-          <SearchHeader 
+          <SearchHeader
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
             viewMode={viewMode}
@@ -130,8 +142,8 @@ const Search = () => {
                 {viewMode === 'policies' ? (
                   <PoliciesTable policies={policies} />
                 ) : (
-                  <ProvisionsTable 
-                    filters={provisionFilters} 
+                  <ProvisionsTable
+                    filters={provisionFilters}
                     searchQuery={searchQuery}
                   />
                 )}
