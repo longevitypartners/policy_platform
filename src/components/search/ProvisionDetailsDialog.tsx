@@ -113,7 +113,7 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange, closeAll
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-[72rem] h-[80vh] p-0">
+        <DialogContent className="max-w-[72rem] h-[80vh] p-0" hideClose={dialogDepth > 1}>
           {dialogDepth > 1 && (
             <div className="absolute top-0 right-0 flex gap-2 transform -translate-y-12 z-50">
               <Button
