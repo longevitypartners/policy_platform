@@ -13,6 +13,7 @@ import {
   FileText,
   Globe,
   BookOpen,
+  ChevronLeft,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { KeyMetric } from "./components/KeyMetric";
@@ -114,15 +115,24 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange, closeAll
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="max-w-[72rem] h-[80vh] p-0">
           {dialogDepth > 1 && (
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={closeAllDialogs}
-              title="Close All Dialogs"
-              className="absolute top-0 right-0 transform -translate-y-12 z-50"
-            >
-              Close all ({dialogDepth})
-            </Button>
+            <div className="absolute top-0 right-0 flex gap-2 transform -translate-y-12 z-50">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => onOpenChange(false)}
+                title="Back to Previous Dialog"
+              >
+                <ChevronLeft className="h-4 w-4 mr-1" /> Back
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={closeAllDialogs}
+                title="Close All Dialogs"
+              >
+                Close all ({dialogDepth})
+              </Button>
+            </div>
           )}
           <div className="flex flex-col h-full overflow-scroll">
             <div className="p-6 flex-shrink-0">
