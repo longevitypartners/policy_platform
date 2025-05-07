@@ -4,6 +4,7 @@ import {
   DialogContent,
   DialogHeader,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import {
   Calendar,
   Globe,
@@ -26,6 +27,8 @@ interface PolicyDetailsDialogProps {
   policy: Policy | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  closeAllDialogs: () => void;
+  dialogDepth: number;
 }
 
 const getRiskLabel = (rating: number | null): string => {
@@ -42,15 +45,26 @@ const getRiskColorClass = (rating: number | null): string => {
   return 'bg-red-100 text-red-800';
 };
 
-export const PolicyDetailsDialog = ({ policy, open, onOpenChange }: PolicyDetailsDialogProps) => {
+export const PolicyDetailsDialog = ({ policy, open, onOpenChange, closeAllDialogs, dialogDepth }: PolicyDetailsDialogProps) => {
   if (!policy) return null;
 
   const provisions = Array.isArray(policy.provisions) ? policy.provisions : [];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[72rem] h-[80vh] overflow-scroll p-0">
-        <div className="flex flex-col">
+      <DialogContent className="max-w-[72rem] h-[80vh] p-0">
+        {dialogDepth > 1 && (
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={closeAllDialogs}
+            title="Close All Dialogs"
+            className="absolute top-0 right-0 transform -translate-y-12 z-50"
+          >
+            Close all ({dialogDepth})
+          </Button>
+        )}
+        <div className="flex flex-col h-full overflow-scroll">
           <div className="p-6 flex-shrink-0">
             <DialogHeader className="space-y-4">
               <PolicyHeader policy={policy} />
@@ -178,6 +192,8 @@ export const PolicyDetailsDialog = ({ policy, open, onOpenChange }: PolicyDetail
                           <ProvisionCard
                             key={provision.provision_id}
                             provision={provision}
+                            closeAllDialogs={closeAllDialogs}
+                            dialogDepth={dialogDepth}
                           />
                         ))}
                       </div>
