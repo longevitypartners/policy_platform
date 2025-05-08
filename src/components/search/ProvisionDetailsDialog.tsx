@@ -12,6 +12,7 @@ import {
   FileText,
   Globe,
   BookOpen,
+  Loader2,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { KeyMetric } from "./components/KeyMetric";
@@ -22,6 +23,7 @@ import { ResourcesTab } from "./components/tabs/ResourcesTab";
 import { PolicyDetailsDialog } from "./PolicyDetailsDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 interface ProvisionDetailsDialogProps {
   provision: Provision | null;
@@ -119,15 +121,7 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
                   </DialogTitle>
                 </div>
 
-                <div className="grid grid-cols-4 gap-4">
-                  <KeyMetric
-                    icon={BookOpen}
-                    label="Associated Policy"
-                    value={provision.policy || "Not specified"}
-                    isClickable={!!provision.policy_id}
-                    onClick={handlePolicyClick}
-                    isLoading={isLoadingPolicy}
-                  />
+                <div className="grid grid-cols-3 gap-4">
                   <KeyMetric
                     icon={Globe}
                     label="Country"
@@ -144,6 +138,33 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
                     value={provision.year_of_enforcement || "Not specified"}
                   />
                 </div>
+
+                <div
+                  className={cn(
+                    "flex items-center gap-4 p-4 rounded-lg bg-muted/50 mt-4 transition-colors",
+                    !!provision.policy_id && !isLoadingPolicy && "cursor-pointer hover:bg-muted",
+                  )}
+                  onClick={handlePolicyClick}
+                >
+                  {isLoadingPolicy ? (
+                    <div className="flex items-center justify-center w-full h-full">
+                      <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                    </div>
+                  ) : (
+                    <>
+                      <BookOpen className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                      <div className="flex flex-col">
+                        <span className="text-sm text-muted-foreground flex-shrink-0">Associated Policy</span>
+                        <div className="mt-1 flex items-center min-h-[24px]">
+                          <span className="font-medium overflow-hidden text-ellipsis">
+                            {provision.policy || "Not specified"}
+                          </span>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+
               </DialogHeader>
             </div>
 
