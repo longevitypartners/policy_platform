@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
@@ -6,6 +5,7 @@ import { PolicyDetailsDialog } from "@/components/search/PolicyDetailsDialog";
 import { ProvisionDetailsDialog } from "@/components/search/ProvisionDetailsDialog";
 import { UpdatesList } from "@/components/dashboard/UpdatesList";
 import { CountriesMap } from "@/components/dashboard/CountriesMap";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type TimeFilter = '30days' | '6months' | 'year';
 type ViewMode = 'policies' | 'provisions';
@@ -15,6 +15,7 @@ const Dashboard = () => {
   const [selectedProvision, setSelectedProvision] = useState<any>(null);
   const [timeFilter, setTimeFilter] = useState<TimeFilter>('6months');
   const [viewMode, setViewMode] = useState<ViewMode>('provisions');
+  const isMobile = useIsMobile();
 
   const getTimeFilterDate = (filter: TimeFilter) => {
     const now = new Date();
@@ -140,10 +141,12 @@ const Dashboard = () => {
         </div>
         
         <div className="grid gap-6 md:grid-cols-2 h-[calc(100vh-9rem)]">
-          <CountriesMap 
-            data={countryStats || []} 
-            isLoading={countryStatsLoading} 
-          />
+          {!isMobile && (
+            <CountriesMap
+              data={countryStats || []}
+              isLoading={countryStatsLoading}
+            />
+          )}
           <UpdatesList 
             updates={updates} 
             isLoading={updatesLoading}
