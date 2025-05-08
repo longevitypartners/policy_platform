@@ -6,6 +6,7 @@ import {
   LogOut,
   Menu,
   X,
+  HelpCircle,
 } from "lucide-react";
 import {
   Sidebar,
@@ -37,6 +38,11 @@ const mainMenuItems = [
     title: "Settings",
     path: "/settings",
     icon: Settings,
+  },
+  {
+    title: "Help",
+    path: "/help",
+    icon: HelpCircle,
   },
 ];
 
