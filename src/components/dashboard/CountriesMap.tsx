@@ -56,7 +56,7 @@ export const CountriesMap = ({ data, isLoading }: CountriesMapProps) => {
   const totalCountries = data.length;
 
   return (
-    <Card className="flex flex-col h-full">
+    <Card className="hidden md:flex flex-col h-full">
       <CardHeader className="pb-2">
         <CardTitle className="mb-4">Policy Coverage</CardTitle>
         <div className="text-sm text-muted-foreground space-y-1">
