@@ -13,6 +13,7 @@ type ViewMode = 'policies' | 'provisions';
 const Dashboard = () => {
   const [selectedPolicy, setSelectedPolicy] = useState<any>(null);
   const [selectedProvision, setSelectedProvision] = useState<any>(null);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [timeFilter, setTimeFilter] = useState<TimeFilter>('6months');
   const [viewMode, setViewMode] = useState<ViewMode>('provisions');
   const isMobile = useIsMobile();
@@ -150,6 +151,8 @@ const Dashboard = () => {
             <CountriesMap
               data={countryStats || []}
               isLoading={countryStatsLoading}
+            selectedCountry={selectedCountry}
+            onCountrySelect={setSelectedCountry}
             />
           )}
           <UpdatesList 
@@ -160,6 +163,7 @@ const Dashboard = () => {
             onTimeFilterChange={setTimeFilter}
             viewMode={viewMode}
             onViewModeChange={setViewMode}
+            selectedCountry={selectedCountry}
           />
         </div>
       </div>

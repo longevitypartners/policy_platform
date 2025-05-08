@@ -14,6 +14,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
+import { useMemo } from "react";
 
 interface Update {
   id: number;
@@ -32,6 +33,7 @@ interface UpdatesListProps {
   onTimeFilterChange: (value: '30days' | '6months' | 'year') => void;
   viewMode: 'policies' | 'provisions';
   onViewModeChange: (mode: 'policies' | 'provisions') => void;
+  selectedCountry: string | null;
 }
 
 export const UpdatesList = ({ 
@@ -41,8 +43,18 @@ export const UpdatesList = ({
   timeFilter,
   onTimeFilterChange,
   viewMode,
-  onViewModeChange
+  onViewModeChange,
+  selectedCountry
 }: UpdatesListProps) => {
+
+  const filteredUpdates = useMemo(() => {
+    if (!updates) return [];
+    if (selectedCountry) {
+      return updates.filter(update => update.country === selectedCountry);
+    }
+    return updates;
+  }, [updates, selectedCountry]);
+
   return (
     <Card className="flex flex-col h-full overflow-hidden">
       <CardHeader className="flex-shrink-0 sticky top-0 bg-background z-10 border-b p-4">
@@ -84,13 +96,13 @@ export const UpdatesList = ({
             <div className="flex items-center justify-center h-full">
               Loading updates...
             </div>
-          ) : !updates?.length ? (
+          ) : !filteredUpdates?.length ? (
             <div className="flex items-center justify-center h-full text-muted-foreground">
-              No updates found
+                {selectedCountry ? `No updates found for ${selectedCountry}` : "No updates found"}
             </div>
           ) : (
             <div className="space-y-4 p-6">
-              {updates.map((update) => (
+                  {filteredUpdates.map((update) => (
                 <TooltipProvider key={`${update.type}-${update.id}`}>
                   <Tooltip>
                     <TooltipTrigger asChild>

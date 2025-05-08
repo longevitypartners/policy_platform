@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { useMemo } from "react";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { scaleLinear } from "d3-scale";
@@ -19,16 +20,21 @@ interface CountryData {
 interface CountriesMapProps {
   data: CountryData[];
   isLoading: boolean;
+  selectedCountry: string | null;
+  onCountrySelect: (countryName: string | null) => void;
 }
 
 const geoUrl = "https://raw.githubusercontent.com/leakyMirror/map-of-europe/master/GeoJSON/europe.geojson";
+const FILLED_COUNTRY_COLOR = "#131345";
+const NO_COUNTRY_DATA_COLOR = "#f1f5f9";
+const BORDER_COLOR = "#cbd5e1";
 
-export const CountriesMap = ({ data, isLoading }: CountriesMapProps) => {
+export const CountriesMap = ({ data, isLoading, selectedCountry, onCountrySelect }: CountriesMapProps) => {
   const colorScale = useMemo(() => {
     const maxPolicies = Math.max(...data.map(d => d.count), 1);
     return scaleLinear<string>()
       .domain([0, maxPolicies])
-      .range(["#f1f5f9", "#0f172a"]);
+      .range([NO_COUNTRY_DATA_COLOR, "#0f172a"]);
   }, [data]);
 
   // Get provisions count per country
@@ -56,7 +62,7 @@ export const CountriesMap = ({ data, isLoading }: CountriesMapProps) => {
   const totalCountries = data.length;
 
   return (
-    <Card className="flex flex-col h-full">
+    <Card className="flex flex-col h-full justify-between">
       <CardHeader className="pb-2">
         <CardTitle className="mb-4">Policy Coverage</CardTitle>
         <div className="text-sm text-muted-foreground space-y-1">
@@ -88,19 +94,28 @@ export const CountriesMap = ({ data, isLoading }: CountriesMapProps) => {
                 <Geographies geography={geoUrl}>
                   {({ geographies }) =>
                     geographies.map((geo) => {
-                      const countryData = data.find(d => d.country === geo.properties.NAME);
-                      const provisionsCount = provisionsData?.[geo.properties.NAME] || 0;
+                      const countryName = geo.properties.NAME;
+                      const countryData = data.find(d => d.country === countryName);
+                      const provisionsCount = provisionsData?.[countryName] || 0;
+                      const isSelected = selectedCountry === countryName;
+
+                      let fill;
+                      if (isSelected) {
+                        fill = FILLED_COUNTRY_COLOR;
+                      } else {
+                        fill = countryData ? colorScale(countryData.count) : NO_COUNTRY_DATA_COLOR;
+                      }
                       
                       return (
                         <Geography
                           key={geo.rsmKey}
                           geography={geo}
-                          fill={countryData ? colorScale(countryData.count) : "#f1f5f9"}
-                          stroke="#cbd5e1"
-                          strokeWidth={0.5}
+                          fill={fill}
+                          stroke={isSelected ? "#000000" : BORDER_COLOR}
+                          strokeWidth={isSelected ? 3 : 0.5}
                           style={{
                             default: { outline: "none" },
-                            hover: { outline: "none", fill: countryData ? colorScale(countryData.count) : "#e2e8f0" },
+                            hover: { outline: "none", fill: FILLED_COUNTRY_COLOR, cursor: "pointer" },
                             pressed: { outline: "none" }
                           }}
                           onMouseEnter={(event) => {
@@ -121,6 +136,13 @@ export const CountriesMap = ({ data, isLoading }: CountriesMapProps) => {
                             const tooltips = document.querySelectorAll('.bg-white.p-2.rounded.shadow-lg.border.text-sm');
                             tooltips.forEach(tooltip => tooltip.remove());
                           }}
+                          onClick={() => {
+                            if (isSelected) {
+                              onCountrySelect(null);
+                            } else {
+                              onCountrySelect(countryName);
+                            }
+                          }}
                         />
                       );
                     })
@@ -131,6 +153,18 @@ export const CountriesMap = ({ data, isLoading }: CountriesMapProps) => {
           )}
         </div>
       </CardContent>
+      <div className="flex justify-between items-center h-10 p-6">
+        <div>
+          <p className="text-sm text-muted-foreground">
+            Country: <span className="font-semibold">{selectedCountry || "All"}</span>
+          </p>
+        </div>
+        {selectedCountry && (
+          <Button variant="outline" size="sm" onClick={() => onCountrySelect(null)}>
+            Clear
+          </Button>
+        )}
+      </div>
     </Card>
   );
 };
