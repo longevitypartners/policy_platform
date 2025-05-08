@@ -9,12 +9,14 @@ import {
 } from "lucide-react";
 import {
   Sidebar,
+  SIDEBAR_WIDTH_MOBILE,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
@@ -47,7 +49,7 @@ export function AppSidebar() {
   const location = useLocation();
   const { toast } = useToast();
   const isMobile = useIsMobile();
-  const [isOpen, setIsOpen] = useState(!isMobile);
+  const { toggleSidebar, openMobile, setOpenMobile } = useSidebar();
 
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -67,10 +69,11 @@ export function AppSidebar() {
       {/* Mobile Menu Toggle Button */}
       {isMobile && (
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="fixed top-4 left-4 z-50 p-3 rounded-lg bg-white shadow-md hover:bg-gray-50"
+          onClick={toggleSidebar}
+          className={`fixed top-4 z-[60] p-3 rounded-lg bg-white shadow-md hover:bg-gray-50 transition-all duration-300 ease-in-out 
+            ${openMobile ? `left-[${SIDEBAR_WIDTH_MOBILE}] ml-2` : 'left-4'}`}
         >
-          {isOpen ? (
+          {openMobile ? (
             <X className="w-6 h-6 text-gray-600" />
           ) : (
             <Menu className="w-6 h-6 text-gray-600" />
@@ -79,7 +82,6 @@ export function AppSidebar() {
       )}
 
       {/* Sidebar */}
-      <div className={`${!isOpen && isMobile ? "hidden" : "block"}`}>
         <Sidebar className="bg-white border-r border-gray-100 w-[220px] shadow-sm min-h-screen">
           <SidebarContent>
             {/* Logo Section */}
@@ -99,7 +101,7 @@ export function AppSidebar() {
                         asChild
                         onClick={() => {
                           navigate(item.path);
-                          if (isMobile) setIsOpen(false);
+                          if (isMobile) setOpenMobile(false);
                         }}
                       >
                         <div
@@ -134,7 +136,7 @@ export function AppSidebar() {
                         asChild
                         onClick={() => {
                           navigate(item.path);
-                          if (isMobile) setIsOpen(false);
+                          if (isMobile) setOpenMobile(false);
                         }}
                       >
                         <div className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-50 transition-colors w-full">
@@ -160,8 +162,7 @@ export function AppSidebar() {
               </SidebarGroupContent>
             </SidebarGroup>
           </SidebarContent>
-        </Sidebar>
-      </div>
+      </Sidebar>
     </>
   );
 }

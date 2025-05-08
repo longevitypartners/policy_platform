@@ -51,7 +51,7 @@ function App() {
           <SidebarProvider>
             <div className="min-h-screen flex w-full">
               {session && <AppSidebar />}
-              <main className="flex-1">
+              <main className="flex-1 overflow-x-hidden">
                 <ErrorBoundary>
                 <Routes>
                   <Route 
