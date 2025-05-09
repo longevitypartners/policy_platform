@@ -1,4 +1,3 @@
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -31,13 +30,15 @@ export function ProfileSettings() {
   const { data: profile, isLoading } = useQuery({
     queryKey: ["user-profile"],
     queryFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) throw new Error("No user found");
 
       const { data, error } = await supabase
-        .from("users")
+        .from("user_country_access")
         .select("*")
-        .eq("id", user.id)
+        .eq("user_id", user.id)
         .single();
 
       if (error) throw error;
@@ -49,23 +50,25 @@ export function ProfileSettings() {
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
       username: profile?.username || "",
-      companyname: profile?.companyname || "",
+      companyname: profile?.organization || "",
     },
     values: {
       username: profile?.username || "",
-      companyname: profile?.companyname || "",
+      companyname: profile?.organization || "",
     },
   });
 
   const mutation = useMutation({
     mutationFn: async (values: ProfileFormValues) => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) throw new Error("No user found");
 
       const { error } = await supabase
-        .from("users")
+        .from("user_country_access")
         .update(values)
-        .eq("id", user.id);
+        .eq("user_id", user.id);
 
       if (error) throw error;
     },

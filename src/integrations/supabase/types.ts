@@ -161,6 +161,41 @@ export type Database = {
         }
         Relationships: []
       }
+      user_country_access: {
+        Row: {
+          user_id: string
+          countries: string[] | null
+          email: string | null
+          organization: string | null
+          username: string | null
+          id: number
+        }
+        Insert: {
+          user_id: string
+          countries?: string[] | null
+          email?: string | null
+          organization?: string | null
+          username?: string | null
+          id?: number
+        }
+        Update: {
+          user_id?: string
+          countries?: string[] | null
+          email?: string | null
+          organization?: string | null
+          username?: string | null
+          id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_country_access_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       users: {
         Row: {
           companyname: string | null
