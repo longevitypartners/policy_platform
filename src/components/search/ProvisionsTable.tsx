@@ -232,6 +232,8 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
         provision={selectedProvision}
         open={isDetailsOpen}
         onOpenChange={setIsDetailsOpen}
+        closeAllDialogs={() => setIsDetailsOpen(false)}
+        dialogDepth={1}
       />
     </>
   );

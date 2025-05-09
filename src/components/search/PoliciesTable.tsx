@@ -163,6 +163,8 @@ export const PoliciesTable = ({ policies }: PoliciesTableProps) => {
         policy={selectedPolicy}
         open={isDetailsOpen}
         onOpenChange={setIsDetailsOpen}
+        closeAllDialogs={() => setIsDetailsOpen(false)}
+        dialogDepth={1}
       />
     </>
   );
