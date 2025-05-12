@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Provision } from "@/types/search";
@@ -8,6 +7,8 @@ import { ProvisionDetailsDialog } from "@/components/search/ProvisionDetailsDial
 
 interface ProvisionCardProps {
   provision: Provision;
+  closeAllDialogs: () => void;
+  dialogDepth: number;
 }
 
 const formatDate = (dateString: unknown): string => {
@@ -17,7 +18,7 @@ const formatDate = (dateString: unknown): string => {
   return format(date, 'MMMM d, yyyy');
 };
 
-export const ProvisionCard = ({ provision }: ProvisionCardProps) => {
+export const ProvisionCard = ({ provision, closeAllDialogs, dialogDepth }: ProvisionCardProps) => {
   const navigate = useNavigate();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   
@@ -41,11 +42,15 @@ export const ProvisionCard = ({ provision }: ProvisionCardProps) => {
         </CardContent>
       </Card>
 
-      <ProvisionDetailsDialog
-        provision={provision}
-        open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-      />
+      {isDialogOpen && (
+        <ProvisionDetailsDialog
+          provision={provision}
+          open={isDialogOpen}
+          onOpenChange={setIsDialogOpen}
+          closeAllDialogs={closeAllDialogs}
+          dialogDepth={dialogDepth + 1}
+        />
+      )}
     </>
   );
 };

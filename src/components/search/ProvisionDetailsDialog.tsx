@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Provision, Policy } from "@/types/search";
 import {
   Dialog,
@@ -6,12 +6,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Calendar,
   FileText,
   Globe,
   BookOpen,
+  ChevronLeft,
   Loader2,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
@@ -29,12 +31,21 @@ interface ProvisionDetailsDialogProps {
   provision: Provision | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  closeAllDialogs: () => void;
+  dialogDepth: number;
 }
 
-export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: ProvisionDetailsDialogProps) => {
+export const ProvisionDetailsDialog = ({ provision, open, onOpenChange, closeAllDialogs, dialogDepth }: ProvisionDetailsDialogProps) => {
   const [selectedPolicy, setSelectedPolicy] = useState<Policy | null>(null);
   const [isPolicyDetailsOpen, setIsPolicyDetailsOpen] = useState(false);
   const [isLoadingPolicy, setIsLoadingPolicy] = useState(false);
+
+  useEffect(() => {
+    if (!open) {
+      setIsPolicyDetailsOpen(false);
+      setSelectedPolicy(null);
+    }
+  }, [open]);
 
   if (!provision) return null;
 
@@ -104,9 +115,28 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-[72rem] h-[80vh] overflow-scroll p-0">
-          <div className="flex flex-col">
-
+        <DialogContent className="max-w-[72rem] h-[80vh] p-0" hideClose={dialogDepth > 1}>
+          {dialogDepth > 1 && (
+            <div className="absolute top-0 right-0 flex gap-2 transform -translate-y-12 z-50">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => onOpenChange(false)}
+                title="Back to Previous Dialog"
+              >
+                <ChevronLeft className="h-4 w-4 mr-1" /> Back
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={closeAllDialogs}
+                title="Close All Dialogs"
+              >
+                Close all ({dialogDepth})
+              </Button>
+            </div>
+          )}
+          <div className="flex flex-col h-full overflow-scroll">
             <div className="p-6 flex-shrink-0">
               <DialogHeader className="space-y-4">
                 <div className="space-y-2">
@@ -228,14 +258,18 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
               </Tabs>
             </div>
           </div>
+
+          {selectedPolicy && (
+            <PolicyDetailsDialog
+              policy={selectedPolicy}
+              open={isPolicyDetailsOpen}
+              onOpenChange={handlePolicyDetailsOpenChange}
+              closeAllDialogs={closeAllDialogs}
+              dialogDepth={dialogDepth + 1}
+            />
+          )}
         </DialogContent>
       </Dialog>
-
-      <PolicyDetailsDialog
-        policy={selectedPolicy}
-        open={isPolicyDetailsOpen}
-        onOpenChange={handlePolicyDetailsOpenChange}
-      />
     </>
   );
 };
