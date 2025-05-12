@@ -58,6 +58,8 @@ export function AppSidebar() {
   const { toggleSidebar, openMobile, setOpenMobile } = useSidebar();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
+  const currentPath = location.pathname.replace(/\/+$/, '');
+
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
@@ -111,36 +113,39 @@ export function AppSidebar() {
             <SidebarGroup>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  {mainMenuItems.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton
-                        asChild
-                        onClick={() => {
-                          navigate(item.path);
-                          if (isMobile) setOpenMobile(false);
-                        }}
-                      >
-                        <div
-                          className={`flex items-center px-4 py-2 cursor-pointer transition-colors w-full ${
-                            location.pathname === item.path
-                              ? "bg-primary text-white hover:bg-primary"
-                              : "hover:bg-foreground/15"
-                          }`}
+                  {mainMenuItems.map((item) => {
+                    const isRouteActive = currentPath === item.path;
+                    return (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton
+                          asChild
+                          onClick={() => {
+                            navigate(item.path);
+                            if (isMobile) setOpenMobile(false);
+                          }}
                         >
-                          {item.icon && (
-                            <item.icon
-                              className={`w-5 h-5 mr-3 text-gray-600 ${
-                                location.pathname === item.path
-                                  ? "text-primary-foreground"
-                                  : ""
+                          <div
+                            className={`flex items-center px-4 py-2 cursor-pointer transition-colors w-full 
+                              ${isRouteActive
+                                ? "bg-primary text-white hover:bg-primary"
+                                : "hover:bg-foreground/15"
                               }`}
-                            />
-                          )}
-                          <span className="text-sm">{item.title}</span>
-                        </div>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
+                          >
+                            {item.icon && (
+                              <item.icon
+                                className={`w-5 h-5 mr-3 text-gray-600 
+                                  ${isRouteActive
+                                    ? "text-primary-foreground"
+                                    : ""
+                                  }`}
+                              />
+                            )}
+                            <span className="text-sm">{item.title}</span>
+                          </div>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>
