@@ -28,6 +28,7 @@ import {
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "../images/LP_logo_black.svg";
+import { cn } from "@/lib/utils";
 
 const mainMenuItems = [
   {
@@ -76,8 +77,11 @@ export function AppSidebar() {
       {isMobile && (
         <button
           onClick={toggleSidebar}
-          className={`fixed top-4 z-[60] p-3 rounded-lg bg-white shadow-md hover:bg-gray-50 transition-all duration-300 ease-in-out 
-            ${openMobile ? `left-[${SIDEBAR_WIDTH_MOBILE}] ml-2` : 'left-4'}`}
+          className={cn(
+            "fixed top-4 z-[60] p-3 rounded-lg bg-white shadow-md hover:bg-gray-50 transition-all duration-300 ease-in-out",
+            openMobile ? "ml-2" : ""
+          )}
+          style={{ left: openMobile ? SIDEBAR_WIDTH_MOBILE : "1rem" }}
         >
           {openMobile ? (
             <X className="w-6 h-6 text-gray-600" />
