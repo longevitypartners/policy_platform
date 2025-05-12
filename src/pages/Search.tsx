@@ -116,7 +116,7 @@ const Search = () => {
             activeFiltersCount={activeFiltersCount}
             setActiveFilterTab={setActiveFilterTab}
           />
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <div className="flex items-start sm:items-center gap-4">
             <SearchInput searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             <FilterTabs
               viewMode={viewMode}
