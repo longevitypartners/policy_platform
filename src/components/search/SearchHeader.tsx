@@ -22,8 +22,8 @@ export const SearchHeader = ({
 }: SearchHeaderProps) => {
   return (
     <div className="mb-8">
+      <h1 className="text-3xl font-bold text-center md:text-left py-3">Search</h1>
       <div className="flex items-center gap-4 mb-4">
-        <h1 className="text-3xl font-bold">Search</h1>
         <div className="flex gap-2">
           <Button
             variant={viewMode === 'provisions' ? 'default' : 'outline'}

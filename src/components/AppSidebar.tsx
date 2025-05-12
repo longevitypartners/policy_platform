@@ -5,12 +5,14 @@ import {
 } from "@/components/ui/popover";
 import {
   Sidebar,
+  SIDEBAR_WIDTH_MOBILE,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { useToast } from "@/components/ui/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -26,6 +28,7 @@ import {
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "../images/LP_logo_black.svg";
+import { cn } from "@/lib/utils";
 
 const mainMenuItems = [
   {
@@ -52,7 +55,7 @@ export function AppSidebar() {
   const location = useLocation();
   const { toast } = useToast();
   const isMobile = useIsMobile();
-  const [isOpen, setIsOpen] = useState(!isMobile);
+  const { toggleSidebar, openMobile, setOpenMobile } = useSidebar();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const handleSignOut = async () => {
@@ -73,10 +76,14 @@ export function AppSidebar() {
       {/* Mobile Menu Toggle Button */}
       {isMobile && (
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="fixed top-4 left-4 z-50 p-3 rounded-lg bg-white shadow-md hover:bg-gray-50"
+          onClick={toggleSidebar}
+          className={cn(
+            "fixed top-2 z-[60] p-3 rounded-lg bg-white shadow-md hover:bg-gray-50 transition-all duration-300 ease-in-out",
+            openMobile ? "ml-2" : ""
+          )}
+          style={{ left: openMobile ? SIDEBAR_WIDTH_MOBILE : "1rem" }}
         >
-          {isOpen ? (
+          {openMobile ? (
             <X className="w-6 h-6 text-gray-600" />
           ) : (
             <Menu className="w-6 h-6 text-gray-600" />
@@ -85,7 +92,6 @@ export function AppSidebar() {
       )}
 
       {/* Sidebar */}
-      <div className={`${!isOpen && isMobile ? "hidden" : "block"}`}>
         <Sidebar className="bg-white border-r border-gray-100 w-[220px] shadow-sm min-h-screen">
           <SidebarContent>
             {/* Logo Section */}
@@ -111,7 +117,7 @@ export function AppSidebar() {
                         asChild
                         onClick={() => {
                           navigate(item.path);
-                          if (isMobile) setIsOpen(false);
+                          if (isMobile) setOpenMobile(false);
                         }}
                       >
                         <div
@@ -148,7 +154,7 @@ export function AppSidebar() {
                         asChild
                         onClick={() => {
                           navigate(item.path);
-                          if (isMobile) setIsOpen(false);
+                          if (isMobile) setOpenMobile(false);
                         }}
                       >
                         <div className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-50 transition-colors w-full">
@@ -204,8 +210,7 @@ export function AppSidebar() {
               </SidebarGroupContent>
             </SidebarGroup>
           </SidebarContent>
-        </Sidebar>
-      </div>
+      </Sidebar>
     </>
   );
 }

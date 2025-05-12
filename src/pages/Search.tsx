@@ -105,7 +105,7 @@ const Search = () => {
   const isLoading = viewMode === 'policies' ? isPoliciesLoading : false;
 
   return (
-    <div className="flex-1 py-4 sm:py-6">
+    <div className="flex-1 py-1 md:py-6">
       <div className="container mx-auto px-2 sm:px-4 lg:px-6 max-w-[1400px]">
         <div className="mb-6 sm:mb-8">
           <SearchHeader
