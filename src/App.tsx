@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,6 +10,7 @@ import Auth from "./pages/Auth";
 import Search from "./pages/Search";
 import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
+import Help from "./pages/Help";
 import NotFound from "./pages/NotFound";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -74,6 +74,10 @@ function App() {
                     path="/settings"
                     element={session ? <Settings /> : <Navigate to="/auth" />}
                   />
+                    <Route
+                      path="/help"
+                      element={session ? <Help /> : <Navigate to="/auth" />}
+                    />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
                 </ErrorBoundary>

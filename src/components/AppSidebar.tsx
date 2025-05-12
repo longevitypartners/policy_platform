@@ -1,4 +1,13 @@
 import {
+  Search,
+  LayoutDashboard,
+  Settings,
+  LogOut,
+  Menu,
+  X,
+  HelpCircle,
+} from "lucide-react";
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -17,14 +26,6 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
-import {
-  LayoutDashboard,
-  LogOut,
-  Menu,
-  Search,
-  Settings,
-  X
-} from "lucide-react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "../images/LP_logo_black.svg";
@@ -45,6 +46,11 @@ const mainMenuItems = [
     title: "Settings",
     path: "/settings",
     icon: Settings,
+  },
+  {
+    title: "Help",
+    path: "/help",
+    icon: HelpCircle,
   },
 ];
 
