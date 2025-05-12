@@ -78,7 +78,7 @@ export function AppSidebar() {
         <button
           onClick={toggleSidebar}
           className={cn(
-            "fixed top-4 z-[60] p-3 rounded-lg bg-white shadow-md hover:bg-gray-50 transition-all duration-300 ease-in-out",
+            "fixed top-2 z-[60] p-3 rounded-lg bg-white shadow-md hover:bg-gray-50 transition-all duration-300 ease-in-out",
             openMobile ? "ml-2" : ""
           )}
           style={{ left: openMobile ? SIDEBAR_WIDTH_MOBILE : "1rem" }}

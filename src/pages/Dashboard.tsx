@@ -134,10 +134,10 @@ const Dashboard = () => {
 
   return (
     <div className="flex-1 h-[calc(100vh-1rem)] overflow-hidden">
-      <div className="container mx-auto px-2 sm:px-4 lg:px-6 max-w-[1400px] h-full py-4 sm:py-6 flex flex-col">
+      <div className="container mx-auto px-2 sm:px-4 lg:px-6 max-w-[1400px] h-full py-4 md:py-6 flex flex-col">
         <div className="mb-4">
-          <h1 className="text-3xl font-bold mb-1">Dashboard</h1>
-          <p className="text-muted-foreground">Welcome to your Policy Tracker dashboard.</p>
+          <h1 className="text-3xl font-bold mb-1 text-center md:text-left">Dashboard</h1>
+          <p className="text-muted-foreground mt-2">Welcome to your Policy Tracker dashboard.</p>
         </div>
         
         <div className="grid gap-6 md:grid-cols-2 h-[calc(100vh-9rem)]">
