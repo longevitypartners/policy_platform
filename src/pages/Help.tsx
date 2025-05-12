@@ -56,7 +56,7 @@ export default function Help() {
         <div className="container max-w-screen-xl mx-auto px-4 py-4">
             <div className="flex flex-col gap-8 mt-4">
                 <Card>
-                    <CardHeader>
+                    <CardHeader className="text-center md:text-left">
                         <CardTitle>About</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -69,7 +69,7 @@ export default function Help() {
                     </CardContent>
                 </Card>
                 <div>
-                    <h2 className="text-2xl font-semibold mb-4">Features Guide</h2>
+                    <h2 className="text-2xl font-semibold mb-4 text-center md:text-left">Features Guide</h2>
                     <Tabs defaultValue="Dashboard" className="w-full">
                         <TabsList className="grid w-full grid-cols-3 bg-background border rounded-md">
                             {routes.map((route) => (
