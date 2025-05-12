@@ -109,7 +109,7 @@ export const PolicyDetailsDialog = ({ policy, open, onOpenChange, closeAllDialog
 
           <div className="flex-1 inset-0 py-4 px-6">
             <Tabs defaultValue="description" className="h-full flex flex-col">
-              <TabsList className="grid w-full grid-cols-4 bg-muted p-1">
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-muted p-1 rounded-lg">
                 <TabsTrigger
                   value="description"
                   className="text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground rounded-md h-10"
