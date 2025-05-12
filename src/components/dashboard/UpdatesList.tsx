@@ -48,7 +48,7 @@ export const UpdatesList = ({
       <CardHeader className="flex-shrink-0 sticky top-0 bg-background z-10 border-b p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <CardTitle>Updates</CardTitle>
+            <CardTitle className="hidden sm:block">Updates</CardTitle>
             <div className="flex gap-2">
               <Button
                 variant={viewMode === 'provisions' ? 'default' : 'outline'}

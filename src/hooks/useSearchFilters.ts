@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { PolicyFiltersState, ProvisionFiltersState, ViewMode } from "@/types/search";
+import {
+  PolicyFiltersState,
+  ProvisionFiltersState,
+  ViewMode,
+} from "@/types/search";
 
 export const useSearchFilters = (viewMode: ViewMode) => {
   const [policyFilters, setPolicyFilters] = useState<PolicyFiltersState>({
@@ -10,19 +14,39 @@ export const useSearchFilters = (viewMode: ViewMode) => {
     policyTypes: [],
   });
 
-  const [provisionFilters, setProvisionFilters] = useState<ProvisionFiltersState>({
+  const [provisionFilters, setProvisionFilters] =
+    useState<ProvisionFiltersState>({
+      countries: [],
+      topics: [],
+      yearsEnforced: [],
+      buildingStatuses: [],
+      assetClasses: [],
+    });
+  const defaultPolicyFilters: PolicyFiltersState = {
+    countries: [],
+    riskRatings: [],
+    categories: [],
+    yearsEnforced: [],
+    policyTypes: [],
+  };
+
+  const defaultProvisionFilters: ProvisionFiltersState = {
     countries: [],
     topics: [],
     yearsEnforced: [],
     buildingStatuses: [],
     assetClasses: [],
-  });
+  };
 
-  const filters = viewMode === 'policies' ? policyFilters : provisionFilters;
-  const setFilters = viewMode === 'policies' ? setPolicyFilters : setProvisionFilters;
+  const filters = viewMode === "policies" ? policyFilters : provisionFilters;
+  const setFilters =
+    viewMode === "policies" ? setPolicyFilters : setProvisionFilters;
 
-  const handleFilterChange = (filterType: keyof (PolicyFiltersState & ProvisionFiltersState), value: string) => {
-    setFilters(prev => {
+  const handleFilterChange = (
+    filterType: keyof (PolicyFiltersState & ProvisionFiltersState),
+    value: string
+  ) => {
+    setFilters((prev) => {
       const currentFilterValues = (prev as any)[filterType] as string[];
       const valueExists = currentFilterValues.includes(value);
 
@@ -30,23 +54,27 @@ export const useSearchFilters = (viewMode: ViewMode) => {
         ...prev,
         [filterType]: valueExists
           ? currentFilterValues.filter((item: string) => item !== value)
-          : [...currentFilterValues, value]
+          : [...currentFilterValues, value],
       };
     });
   };
 
-  const handleSelectAll = (filterType: keyof (PolicyFiltersState & ProvisionFiltersState), options: string[]) => {
-    setFilters(prev => ({
+  const handleSelectAll = (
+    filterType: keyof (PolicyFiltersState & ProvisionFiltersState),
+    options: string[]
+  ) => {
+    setFilters((prev) => ({
       ...prev,
-      [filterType]: options
+      [filterType]: options,
     }));
   };
 
-  const handleClearAll = (filterType: keyof (PolicyFiltersState & ProvisionFiltersState)) => {
-    setFilters(prev => ({
-      ...prev,
-      [filterType]: []
-    }));
+  const handleClearAll = () => {
+    if (viewMode === "policies") {
+      setPolicyFilters(defaultPolicyFilters);
+    } else {
+      setProvisionFilters(defaultProvisionFilters);
+    }
   };
 
   return {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Provision, Policy } from "@/types/search";
 import {
   Dialog,
@@ -6,12 +6,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Calendar,
   FileText,
   Globe,
   BookOpen,
+  ChevronLeft,
+  Loader2,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { KeyMetric } from "./components/KeyMetric";
@@ -22,17 +25,27 @@ import { ResourcesTab } from "./components/tabs/ResourcesTab";
 import { PolicyDetailsDialog } from "./PolicyDetailsDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 interface ProvisionDetailsDialogProps {
   provision: Provision | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  closeAllDialogs: () => void;
+  dialogDepth: number;
 }
 
-export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: ProvisionDetailsDialogProps) => {
+export const ProvisionDetailsDialog = ({ provision, open, onOpenChange, closeAllDialogs, dialogDepth }: ProvisionDetailsDialogProps) => {
   const [selectedPolicy, setSelectedPolicy] = useState<Policy | null>(null);
   const [isPolicyDetailsOpen, setIsPolicyDetailsOpen] = useState(false);
   const [isLoadingPolicy, setIsLoadingPolicy] = useState(false);
+
+  useEffect(() => {
+    if (!open) {
+      setIsPolicyDetailsOpen(false);
+      setSelectedPolicy(null);
+    }
+  }, [open]);
 
   if (!provision) return null;
 
@@ -102,9 +115,28 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-[72rem] h-[80vh] overflow-scroll p-0">
-          <div className="flex flex-col">
-
+        <DialogContent className="max-w-[72rem] h-[80vh] p-0" hideClose={dialogDepth > 1}>
+          {dialogDepth > 1 && (
+            <div className="absolute top-0 right-0 flex gap-2 transform -translate-y-12 z-50">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => onOpenChange(false)}
+                title="Back to Previous Dialog"
+              >
+                <ChevronLeft className="h-4 w-4 mr-1" /> Back
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={closeAllDialogs}
+                title="Close All Dialogs"
+              >
+                Close all ({dialogDepth})
+              </Button>
+            </div>
+          )}
+          <div className="flex flex-col h-full overflow-scroll">
             <div className="p-6 flex-shrink-0">
               <DialogHeader className="space-y-4">
                 <div className="space-y-2">
@@ -119,15 +151,7 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
                   </DialogTitle>
                 </div>
 
-                <div className="grid grid-cols-4 gap-4">
-                  <KeyMetric
-                    icon={BookOpen}
-                    label="Associated Policy"
-                    value={provision.policy || "Not specified"}
-                    isClickable={!!provision.policy_id}
-                    onClick={handlePolicyClick}
-                    isLoading={isLoadingPolicy}
-                  />
+                <div className="grid grid-cols-3 gap-4">
                   <KeyMetric
                     icon={Globe}
                     label="Country"
@@ -144,6 +168,33 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
                     value={provision.year_of_enforcement || "Not specified"}
                   />
                 </div>
+
+                <div
+                  className={cn(
+                    "flex items-center gap-4 p-4 rounded-lg bg-muted/50 mt-4 transition-colors",
+                    !!provision.policy_id && !isLoadingPolicy && "cursor-pointer hover:bg-muted",
+                  )}
+                  onClick={handlePolicyClick}
+                >
+                  {isLoadingPolicy ? (
+                    <div className="flex items-center justify-center w-full h-full">
+                      <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                    </div>
+                  ) : (
+                    <>
+                      <BookOpen className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                      <div className="flex flex-col">
+                        <span className="text-sm text-muted-foreground flex-shrink-0">Associated Policy</span>
+                        <div className="mt-1 flex items-center min-h-[24px]">
+                          <span className="font-medium overflow-hidden text-ellipsis">
+                            {provision.policy || "Not specified"}
+                          </span>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+
               </DialogHeader>
             </div>
 
@@ -151,7 +202,7 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
 
             <div className="flex-1 inset-0 py-4 px-6">
               <Tabs defaultValue="overview" className="h-full flex flex-col">
-                <TabsList className="grid w-full grid-cols-4 bg-muted p-1">
+                <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 bg-muted p-1 rounded-lg">
                   <TabsTrigger
                     value="overview"
                     className="text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground rounded-md h-10"
@@ -207,14 +258,18 @@ export const ProvisionDetailsDialog = ({ provision, open, onOpenChange }: Provis
               </Tabs>
             </div>
           </div>
+
+          {selectedPolicy && (
+            <PolicyDetailsDialog
+              policy={selectedPolicy}
+              open={isPolicyDetailsOpen}
+              onOpenChange={handlePolicyDetailsOpenChange}
+              closeAllDialogs={closeAllDialogs}
+              dialogDepth={dialogDepth + 1}
+            />
+          )}
         </DialogContent>
       </Dialog>
-
-      <PolicyDetailsDialog
-        policy={selectedPolicy}
-        open={isPolicyDetailsOpen}
-        onOpenChange={handlePolicyDetailsOpenChange}
-      />
     </>
   );
 };

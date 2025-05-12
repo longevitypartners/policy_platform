@@ -36,17 +36,17 @@ const Auth = () => {
 
   const SITE_KEY = import.meta.env.VITE_GOOGLE_CAPTCHA_SITE_KEY;
 
+  // for when we want to split things
   // const sendEmailApiUrl =
   //   process.env.NODE_ENV === "production"
   //     ? import.meta.env.VITE_PROD_SEND_EMAIL_API ||
   //       "https://ypi31unyij.execute-api.us-east-1.amazonaws.com/prod"
   //     : import.meta.env.VITE_STAGING_SEND_EMAIL_API ||
   //       "https://ypi31unyij.execute-api.us-east-1.amazonaws.com/staging";
-  const sendEmailApiUrl =
-    import.meta.env.VITE_STAGING_SEND_EMAIL_API ||
-    "https://w2vnwfggae.execute-api.us-east-1.amazonaws.com/staging";
 
-  // const sendEmailAuth = import.meta.env.VITE_SEND_EMAIL_API_KEY || 'oON6GJSBcg2qrHC4PaUzW1JLJ5se4QIz5xJA71yL'
+  const sendEmailApiUrl = import.meta.env.VITE_STAGING_SEND_EMAIL_API;
+
+  const sendEmailAuth = import.meta.env.VITE_SEND_EMAIL_API_KEY;
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -140,7 +140,7 @@ const Auth = () => {
       regions.length === 0 ||
       !acceptedTerms ||
       (!isLocalhost && !captchaToken);
-  
+
     if (isFormInvalid) {
       toast({
         title: "Error",
@@ -149,7 +149,7 @@ const Auth = () => {
       });
       return;
     }
-  
+
     try {
       setLoading(true);
 
@@ -158,55 +158,69 @@ const Auth = () => {
         .select("id")
         .eq("email", signupEmail)
         .limit(1);
-  
+
       if (selectError) {
         console.error("Error checking for existing email:", selectError);
         toast({
           title: "Submission Error",
-          description: "An error occurred while checking for existing requests.",
+          description:
+            "An error occurred while checking for existing requests.",
           variant: "destructive",
         });
         return;
       }
-  
+
       if (existingRequest && existingRequest.length > 0) {
         toast({
           title: "Duplicate Request",
           description: "This email has already requested access.",
           variant: "default",
         });
-        return; 
+        return;
       }
-  
-      const { error: insertError } = await supabase.from("signup_requests").insert([
-        {
-          email: signupEmail,
-          organization,
-          regions,
-          accepted_terms: acceptedTerms,
-          captcha_token: captchaToken,
-        },
-      ]);
-  
+
+      const { error: insertError } = await supabase
+        .from("signup_requests")
+        .insert([
+          {
+            email: signupEmail,
+            organization,
+            regions,
+            accepted_terms: acceptedTerms,
+            captcha_token: captchaToken,
+          },
+        ]);
+
       if (insertError) {
         console.error("Error inserting signup request:", insertError);
         toast({
           title: "Submission Error",
           description:
-            insertError.message || "An error occurred while submitting your request.",
+            insertError.message ||
+            "An error occurred while submitting your request.",
           variant: "destructive",
         });
         return;
       }
-  
+
       axios
-        .post(sendEmailApiUrl, {
-          email: signupEmail,
-          organization,
-          regions,
-        })
-        .catch((err) => console.warn("Email notification failed:", err.message));
-  
+        .post(
+          sendEmailApiUrl,
+          {
+            email: signupEmail,
+            organization,
+            regions,
+          },
+          {
+            headers: {
+              "x-api-key": sendEmailAuth,
+            },
+          }
+        )
+        .catch((err) =>
+          console.warn("Email notification failed:", err.message)
+        );
+
       setShowSignupModal(false);
       setAcceptedTerms(false);
       toast({
@@ -224,7 +238,6 @@ const Auth = () => {
       setLoading(false);
     }
   };
-  
 
   return (
     <div className="flex flex-wrap md:flex-nowrap flex-row justify-between h-full">
