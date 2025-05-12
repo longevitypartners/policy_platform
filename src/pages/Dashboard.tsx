@@ -132,6 +132,11 @@ const Dashboard = () => {
     }
   };
 
+  const closeAllDialogs = () => {
+    setSelectedPolicy(null);
+    setSelectedProvision(null);
+  };
+
   return (
     <div className="flex-1 h-[calc(100vh-1rem)] overflow-hidden">
       <div className="container mx-auto px-2 sm:px-4 lg:px-6 max-w-[1400px] h-full py-4 md:py-6 flex flex-col">
@@ -163,12 +168,16 @@ const Dashboard = () => {
         policy={selectedPolicy} 
         open={!!selectedPolicy} 
         onOpenChange={open => !open && setSelectedPolicy(null)} 
+        closeAllDialogs={closeAllDialogs}
+        dialogDepth={1}
       />
       
       <ProvisionDetailsDialog 
         provision={selectedProvision} 
         open={!!selectedProvision} 
         onOpenChange={open => !open && setSelectedProvision(null)} 
+        closeAllDialogs={closeAllDialogs}
+        dialogDepth={1}
       />
     </div>
   );
