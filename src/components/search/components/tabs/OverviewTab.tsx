@@ -2,6 +2,7 @@ interface Provision {
   requirement: string;
   subject_to_obligation?: string;
   asset_class?: string;
+  building_status?: string;
 }
 
 export const OverviewTab = ({ provision }: { provision: Provision | null }) => {
@@ -21,7 +22,7 @@ export const OverviewTab = ({ provision }: { provision: Provision | null }) => {
             <span className="text-sm font-medium w-32">Building Status</span>
             <span className="text-sm text-muted-foreground">
               {" "}
-              {provision.subject_to_obligation ?? "N/A"}
+              {provision.building_status ?? "N/A"}
             </span>
           </div>
 
