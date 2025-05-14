@@ -28,6 +28,7 @@ const geoUrl = "https://raw.githubusercontent.com/leakyMirror/map-of-europe/mast
 const FILLED_COUNTRY_COLOR = "#131345";
 const NO_COUNTRY_DATA_COLOR = "#f1f5f9";
 const BORDER_COLOR = "#cbd5e1";
+const SELECTED_COUNTRY_COLOR = "#000000";
 
 export const CountriesMap = ({ data, isLoading, selectedCountry, onCountrySelect }: CountriesMapProps) => {
   const colorScale = useMemo(() => {
@@ -111,7 +112,7 @@ export const CountriesMap = ({ data, isLoading, selectedCountry, onCountrySelect
                           key={geo.rsmKey}
                           geography={geo}
                           fill={fill}
-                          stroke={isSelected ? "#000000" : BORDER_COLOR}
+                          stroke={isSelected ? SELECTED_COUNTRY_COLOR : BORDER_COLOR}
                           strokeWidth={isSelected ? 3 : 0.5}
                           style={{
                             default: { outline: "none" },
