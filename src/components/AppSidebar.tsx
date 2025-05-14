@@ -202,10 +202,10 @@ export function AppSidebar() {
                       >
                         Reach out to us at <br />
                         <a
-                          href="mailto:contact@longevity.co.uk"
+                          href="mailto:jg@longevity.co.uk"
                           className="text-blue-600 underline"
                         >
-                          contact@longevity.co.uk
+                          jg@longevity.co.uk
                         </a>
                       </PopoverContent>
                     </Popover>
