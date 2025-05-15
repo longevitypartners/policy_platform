@@ -394,11 +394,11 @@ const Auth = () => {
                   </button>
                 </p>
               </div>
-              <div className="captcha">
+              <div className="captcha" style={{ position: "relative", zIndex: 1000 }}>
                 <ReCAPTCHA
                   sitekey={SITE_KEY}
                   onChange={(token: string | null) => setCaptchaToken(token)}
-                  className="pt-4 z-50"
+                  className="pt-4"
                 />
               </div>
             </div>
