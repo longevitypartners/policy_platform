@@ -184,8 +184,6 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
 
   return (
     <>
-      <div>
-
         <Table>
           <TableHeader className="sticky top-0 bg-white z-10">
             <TableRow>
@@ -225,8 +223,7 @@ export const ProvisionsTable = ({ filters, searchQuery }: ProvisionsTableProps) 
               </TableRow>
             )}
           </TableBody>
-        </Table>
-      </div>
+      </Table>
 
       <ProvisionDetailsDialog
         provision={selectedProvision}
