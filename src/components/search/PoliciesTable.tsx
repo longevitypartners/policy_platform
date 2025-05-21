@@ -102,8 +102,7 @@ export const PoliciesTable = ({ policies }: PoliciesTableProps) => {
 
   return (
     <>
-      <div className="overflow-x-auto">
-        <Table>
+      <Table>
           <TableHeader className="sticky top-0 bg-white z-10">
             <TableRow>
               <SortableHeader field="title">Policy</SortableHeader>
@@ -156,8 +155,7 @@ export const PoliciesTable = ({ policies }: PoliciesTableProps) => {
               </TableRow>
             ))}
           </TableBody>
-        </Table>
-      </div>
+      </Table>
 
       <PolicyDetailsDialog 
         policy={selectedPolicy}
